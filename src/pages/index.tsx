@@ -1,14 +1,10 @@
-import Head from "next/head";
-import { Button } from "@chakra-ui/react";
+import { Button, Heading } from "@chakra-ui/react";
 
 
 export default function Home() {
   return (
     <>
-      <Head>
-        <title>Chakra UI</title>
-      </Head>
-      <Button colorScheme="teal" size="md">
+      <Button colorScheme="teal" size="lg">
         Chakra UI ボタン
       </Button>
     </>
