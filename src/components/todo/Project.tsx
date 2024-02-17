@@ -5,7 +5,7 @@ import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
 
 const Project = () => {
   return (
-    <Box p={4} bgColor='blackAlpha.300' borderRadius='md' h='30vh'>
+    <Box p={4} bgColor='blackAlpha.300' borderRadius='md' h='30vh' shadow='base'>
       <Flex justify='space-between' align='center' mb={3}>
         <Heading fontSize='xs'>プロジェクト名</Heading>
         <Popover>
@@ -25,7 +25,7 @@ const Project = () => {
       <Stack spacing={3}>
         <Todo />
         <Todo />
-        <IconButton size='sm' colorScheme='blackAlpha' w='20px' aria-label="add todo" icon={<AddIcon />} />
+        <IconButton size='sm' colorScheme='blackAlpha' w='20px' aria-label="add todo" icon={<AddIcon />} shadow='base' />
       </Stack>
     </Box>
   )

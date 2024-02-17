@@ -1,11 +1,23 @@
-import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { Box, ChakraProvider, Flex, extendTheme } from "@chakra-ui/react";
-
-import Header from "@/components/layouts/Header";
-import Sidebar from "@/components/layouts/Sidebar";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
+  styles: {
+    global: {
+      body: {
+        fontFamily: '"Noto Sans JP", sans-serif',
+        fontOpticalSizing: "auto",
+        fontStyle: "normal",
+      },
+    },
+  },
+  components: {
+    Heading: {
+      baseStyle: {
+        fontFamily: '"Noto Sans JP", sans-serif',
+      },
+    },
+  },
   colors: {
     main: '#6ea9a8',
   },
