@@ -13,6 +13,7 @@ type Props = {
 const Project: FC<Props> = ({project}) => {
   const [editingProjectMode, setEditingProjectMode] = useState(false);
   const [editedProjectName, setEditedProjectName] = useState(project.name);
+  const [editStartProjectName, setEditStartProjectName] = useState(``);
   
   const inputRef = useRef<HTMLInputElement>(null);
   //プロジェクト名編集モードになったらInputにfocusを当てる
@@ -26,8 +27,12 @@ const Project: FC<Props> = ({project}) => {
   const handleEditingProjectMode = () => {
     setEditingProjectMode(!editingProjectMode);
 
+    if (editingProjectMode){
+      setEditStartProjectName(editedProjectName);
+    }
+
     if (editedProjectName.trim() === '') {
-      setEditedProjectName(project.name);
+      setEditedProjectName(editStartProjectName);
     }
   }
 
