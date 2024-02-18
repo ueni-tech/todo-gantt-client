@@ -1,13 +1,20 @@
 import { Box, Button, Flex, Heading, IconButton, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Stack } from '@chakra-ui/react'
-import React from 'react'
+import React, { FC } from 'react'
 import Todo from './Todo'
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
 
-const Project = () => {
+type Props = {
+  project: {
+    id: number,
+    name: string
+  }
+}
+
+const Project: FC<Props> = ({project}) => {
   return (
     <Box p={4} bgColor='blackAlpha.300' borderRadius='md' h='30vh' shadow='base'>
       <Flex justify='space-between' align='center' mb={3}>
-        <Heading fontSize='xs'>プロジェクト名</Heading>
+        <Heading fontSize='xs'>{project.name}</Heading>
         <Popover>
           <PopoverTrigger>
             <DeleteIcon color='blackAlpha.200' cursor='pointer' _hover={{ color: 'blackAlpha.500' }} />
