@@ -1,26 +1,28 @@
-import { Button, FormControl, FormHelperText, FormLabel, IconButton, Input, SimpleGrid, useDisclosure } from '@chakra-ui/react'
-import React, { ChangeEvent, useState } from 'react'
+import { Button, FormControl, FormHelperText, FormLabel, IconButton, Input, SimpleGrid, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react'
+import React, { ChangeEvent, use, useEffect, useState } from 'react'
 import Project from '../todo/Project'
 import { AddIcon } from '@chakra-ui/icons'
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react'
+
+type Project = {
+  id: number,
+  name: string
+}
 
 const TodosView = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // プロジェクトの初期値設定(あとで消す)
-  const initProjects = [
-    {
-      id: 1,
-      name: 'Project 1',
-    },
-    {
-      id: 2,
-      name: 'Project 2',
-    }
-  ];
-
-  const [projects, setProjects] = useState(initProjects);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [projectName, setProjectName] = useState('');
+
+  useEffect(() => {
+    // jsonフォルダにあるprojects.jsonを読み込む
+    const initProjects = async () => {
+      const res = await fetch('/json/projects.json');
+      const data = await res.json();
+      setProjects(data);
+    }
+    initProjects();
+  }, []);
 
   // プロジェクト名入力時の処理
   const handleInputProjectName = (e: ChangeEvent<HTMLInputElement>) => {
