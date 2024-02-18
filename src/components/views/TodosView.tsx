@@ -38,6 +38,12 @@ const TodosView = () => {
     onClose();
   }
 
+  // モーダルを閉じる処理
+  const onModalClose = () => {
+    setProjectName('');
+    onClose();
+  }
+
   return (
     <>
       <SimpleGrid columns={{ base: 2, md: 3, lg: 4, xl: 5 }} spacing={6}>
@@ -62,7 +68,7 @@ const TodosView = () => {
             <Button size='sm' colorScheme="blue" mr={3} onClick={handleCreateProject} >
               作成
             </Button>
-            <Button size='sm' variant="outline" onClick={onClose}>
+            <Button size='sm' variant="outline" onClick={onModalClose}>
               キャンセル
             </Button>
           </ModalFooter>
