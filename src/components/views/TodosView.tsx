@@ -8,20 +8,40 @@ type Project = {
   name: string
 }
 
+type Task = {
+  id: number,
+  project_id: number,
+  name: string,
+  start_date: string,
+  end_date: string,
+  is_completed: boolean
+}
+
 const TodosView = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [projectName, setProjectName] = useState('');
+  const [tasks, setTasks] = useState<Task[]>([]);
+
 
   useEffect(() => {
-    // jsonフォルダにあるprojects.jsonを読み込む
+    // server.jsonのprojectsを読み込む
     const initProjects = async () => {
-      const res = await fetch('/json/projects.json');
+      const res = await fetch('http://localhost:3001/projects');
       const data = await res.json();
       setProjects(data);
     }
+
+    // server.jsonのtasksを読み込む
+    const initTasks = async () => {
+      const res = await fetch('http://localhost:3001/tasks');
+      const data = await res.json();
+      setTasks(data);
+    }
+
     initProjects();
+    initTasks();
   }, []);
 
   // プロジェクト名入力時の処理
@@ -50,7 +70,7 @@ const TodosView = () => {
     <>
       <SimpleGrid columns={{ base: 2, md: 3, lg: 4, xl: 5 }} spacing={6}>
         {projects.map((project) => (
-          <Project key={project.id} project={project} />
+          <Project key={project.id} project={project} tasks={tasks} setTasks={setTasks} />
         ))}
         <IconButton size='sm' bgColor='gray.300' w='20px' aria-label="add project" icon={<AddIcon color='white' />} shadow='base' onClick={onOpen} />
       </SimpleGrid>

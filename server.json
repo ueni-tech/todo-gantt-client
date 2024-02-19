@@ -1,0 +1,74 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "name": "project 1"
+    },
+    {
+      "id": 2,
+      "name": "project 2"
+    },
+    {
+      "id": 3,
+      "name": "project 3"
+    },
+    {
+      "id": 4,
+      "name": "project 4"
+    },
+    {
+      "id": 5,
+      "name": "project 5"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "project_id": 1,
+      "name": "task 1",
+      "is_completed": false,
+      "start_date": "2024/02/19",
+      "end_date": "2024/02/23"
+    },
+    {
+      "id": 2,
+      "project_id": 1,
+      "name": "task 2",
+      "is_completed": false,
+      "start_date": "2024-02-24",
+      "end_date": "2024-02-26"
+    },
+    {
+      "id": 3,
+      "project_id": 2,
+      "name": "task 3",
+      "is_completed": false,
+      "start_date": "2024-02-21",
+      "end_date": "2024-02-25"
+    },
+    {
+      "id": 4,
+      "project_id": 4,
+      "name": "task 4",
+      "is_completed": false,
+      "start_date": "2024-02-22",
+      "end_date": "2024-02-26"
+    },
+    {
+      "id": 5,
+      "project_id": 3,
+      "name": "テスト",
+      "start_date": "2024-02-19",
+      "end_date": "2024-02-23",
+      "is_completed": false
+    },
+    {
+      "id": 6,
+      "project_id": 3,
+      "name": "テスト2",
+      "start_date": "2024-02-20",
+      "end_date": "2024-02-22",
+      "is_completed": false
+    }
+  ]
+}

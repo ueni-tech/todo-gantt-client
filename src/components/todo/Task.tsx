@@ -7,7 +7,7 @@ type Props = {
   task: {
     id: number,
     name: string,
-    done: boolean
+    is_completed: boolean
   }
 }
 
