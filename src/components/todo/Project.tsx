@@ -2,7 +2,6 @@ import { Box, Button, Flex, FormControl, Heading, IconButton, Input, Popover, Po
 import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
 import Task from './Task'
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
-import useTasks from '@/hooks/useTasks'
 
 type Props = {
   project: {
@@ -16,7 +15,8 @@ type Props = {
     start_date: string,
     end_date: string,
     is_completed: boolean
-  }[]
+  }[],
+  addTask: (task: Task) => void
 }
 
 type Task = {
@@ -28,10 +28,8 @@ type Task = {
   is_completed: boolean
 }
 
-const Project: FC<Props> = ({ project, tasks }) => {
+const Project: FC<Props> = ({ project, tasks, addTask }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {addTask} = useTasks('http://localhost:3001/tasks');
-
   const [editingProjectMode, setEditingProjectMode] = useState(false);
   const [editedProjectName, setEditedProjectName] = useState(project.name);
   const [editStartProjectName, setEditStartProjectName] = useState('');
@@ -92,24 +90,6 @@ const Project: FC<Props> = ({ project, tasks }) => {
       end_date: endDate,
       is_completed: false
     });
-
-    // const response = fetch('http://localhost:3001/tasks', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     id: tasks.length + 1,
-    //     project_id: project.id,
-    //     name: taskName,
-    //     start_date: startDate,
-    //     end_date: endDate,
-    //     is_completed: false
-    //   })
-    // });
-
-    // postに成功したら、tasksを再取得して更新
-
 
     onModalClose();
   }

@@ -1,27 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type Task = {
   id: number;
-  name: string;
   project_id: number;
-  is_completed: boolean;
+  name: string;
   start_date: string;
   end_date: string;
+  is_completed: boolean;
 };
 
 const useTasks = (initialUrl: string) => {
   const [tasks, setTasks] = useState([]);
 
-  // タスクリストを取得して更新
+  // タスクリストを取得して更新する関数
   const fetchTasks = async () => {
     const response = await fetch(initialUrl);
     const data = await response.json();
     setTasks(data);
   };
 
-  // タスクを追加
+  // コンポーネントのマウント時にタスクリストを取得
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  // タスクを追加する関数
   const addTask = async (task: Task) => {
-    const response = await fetch(initialUrl, {
+    await fetch(initialUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,12 +34,11 @@ const useTasks = (initialUrl: string) => {
       body: JSON.stringify(task),
     });
 
-    if (response.ok) { // HTTPステータスコードが成功を示している場合
-      fetchTasks(); // タスクリストを再取得して更新
-    }
+    // タスク追加後にリストを再取得
+    fetchTasks();
   };
 
-  return { fetchTasks, tasks, addTask };
+  return { tasks, addTask };
 };
 
 export default useTasks;
