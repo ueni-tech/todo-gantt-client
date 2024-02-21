@@ -48,9 +48,12 @@ const Project: FC<Props> = ({ project, tasks, setTasks }) => {
 
   useEffect(() => {
     // tasksをproject_idでフィルタリングして更新
-    const filteredData = tasks.filter((task: Task) => task.project_id === project.id);
+    const projectID = Number(project.id);
+    const filteredData = tasks.filter((task: Task) => task.project_id === projectID);
+    console.log(filteredData);
     setFilteredTasks(filteredData);
-  }, []);
+  }, [tasks, project.id]);
+  
 
   const inputRef = useRef<HTMLInputElement>(null);
   //プロジェクト名編集モードになったらInputにfocusを当てる
