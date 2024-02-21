@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import axios from 'axios';
+import useSWR from 'swr';
 
 type Task = {
   id: number;
@@ -9,36 +10,24 @@ type Task = {
   is_completed: boolean;
 };
 
-const useTasks = (initialUrl: string) => {
-  const [tasks, setTasks] = useState([]);
+const fetcher = async (url: string) => {
+  const response = await axios.get(url);
+  return response.data;
+}
 
-  // タスクリストを取得して更新する関数
-  const fetchTasks = async () => {
-    const response = await fetch(initialUrl);
-    const data = await response.json();
-    setTasks(data);
-  };
-
-  // コンポーネントのマウント時にタスクリストを取得
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+const useTasks = (url: string) => {
+  const { data: tasks, mutate, error } = useSWR(url, fetcher);
 
   // タスクを追加する関数
   const addTask = async (task: Task) => {
-    await fetch(initialUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(task),
-    });
-
-    // タスク追加後にリストを再取得
-    fetchTasks();
+    await axios.post(url, task)
+      .then(() => {
+        mutate();
+      })
+      .catch(error => console.error('タスクの追加に失敗しました', error));
   };
 
-  return { tasks, addTask };
+  return { tasks, error, addTask };
 };
 
 export default useTasks;

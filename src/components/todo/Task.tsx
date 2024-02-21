@@ -1,6 +1,5 @@
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Box, Button, Checkbox, Flex, IconButton, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Text } from '@chakra-ui/react'
-import { color } from 'framer-motion'
 import React, { FC } from 'react'
 
 type Props = {
