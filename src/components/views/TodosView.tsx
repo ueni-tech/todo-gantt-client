@@ -2,6 +2,7 @@ import { Button, FormControl, FormHelperText, FormLabel, IconButton, Input, Simp
 import React, { ChangeEvent, use, useEffect, useState } from 'react'
 import Project from '../todo/Project'
 import { AddIcon } from '@chakra-ui/icons'
+import useTasks from '@/hooks/useTasks'
 
 type Project = {
   id: number,
@@ -18,12 +19,12 @@ type Task = {
 }
 
 const TodosView = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   const [projects, setProjects] = useState<Project[]>([]);
   const [projectName, setProjectName] = useState('');
-  const [tasks, setTasks] = useState<Task[]>([]);
-
+  // const [tasks, setTasks] = useState<Task[]>([]);
+  
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { tasks, fetchTasks } = useTasks('http://localhost:3001/tasks');
 
   useEffect(() => {
     // server.jsonのprojectsを読み込む
@@ -34,14 +35,15 @@ const TodosView = () => {
     }
 
     // server.jsonのtasksを読み込む
-    const initTasks = async () => {
-      const res = await fetch('http://localhost:3001/tasks');
-      const data = await res.json();
-      setTasks(data);
-    }
+    // const initTasks = async () => {
+    //   const res = await fetch('http://localhost:3001/tasks');
+    //   const data = await res.json();
+    //   setTasks(data);
+    // }
 
     initProjects();
-    initTasks();
+    fetchTasks();
+    // initTasks();
   }, []);
 
   // プロジェクト名入力時の処理
@@ -70,7 +72,7 @@ const TodosView = () => {
     <>
       <SimpleGrid columns={{ base: 2, md: 3, lg: 4, xl: 5 }} spacing={6}>
         {projects.map((project) => (
-          <Project key={project.id} project={project} tasks={tasks} setTasks={setTasks} />
+          <Project key={project.id} project={project} tasks={tasks} />
         ))}
         <IconButton size='sm' bgColor='gray.300' w='20px' aria-label="add project" icon={<AddIcon color='white' />} shadow='base' onClick={onOpen} />
       </SimpleGrid>
