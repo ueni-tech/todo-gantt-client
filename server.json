@@ -5,8 +5,8 @@
       "name": "1"
     },
     {
-      "id": "3acb2de3-7f2d-4cb1-87fa-8b6050e9ee35",
-      "name": "2"
+      "id": "96eabeb5-44d4-40be-8c82-6282477d991b",
+      "name": "123456"
     }
   ],
   "tasks": [
@@ -16,14 +16,6 @@
       "name": "1-1",
       "start_date": "2024-02-23",
       "end_date": "2024-02-24",
-      "is_completed": false
-    },
-    {
-      "id": "1c7865f2-427d-43c9-a87b-3acb36271033",
-      "project_id": "3acb2de3-7f2d-4cb1-87fa-8b6050e9ee35",
-      "name": "2-1",
-      "start_date": "2024-02-25",
-      "end_date": "2024-02-28",
       "is_completed": false
     }
   ]

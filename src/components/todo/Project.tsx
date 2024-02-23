@@ -23,12 +23,11 @@ type Task = {
 }
 
 const Project: FC<Props> = ({ project }) => {
-  const { deleteProject } = useProjects('http://localhost:3001/projects');
+  const { deleteProject, updateProject } = useProjects('http://localhost:3001/projects');
   const { tasks, addTask } = useTasks('http://localhost:3001/tasks');
   const { isOpen: isCreateTaskOpen, onOpen: onCreateTaskOpen, onClose: onCreateTaskClose } = useDisclosure();
   const [editingProjectMode, setEditingProjectMode] = useState(false);
   const [editedProjectName, setEditedProjectName] = useState(project.name);
-  const [editStartProjectName, setEditStartProjectName] = useState('');
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [taskName, setTaskName] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -56,20 +55,26 @@ const Project: FC<Props> = ({ project }) => {
   // プロジェクト名編集モードの切り替え処理
   const handleEditingProjectMode = () => {
     setEditingProjectMode(!editingProjectMode);
-
-    if (editingProjectMode) {
-      setEditStartProjectName(editedProjectName);
-    }
-
-    if (editedProjectName.trim() === '') {
-      setEditedProjectName(editStartProjectName);
-    }
   }
 
   // プロジェクト名編集処理
   const handleEditedProjectName = (e: ChangeEvent<HTMLInputElement>) => {
     setEditedProjectName(e.target.value);
   }
+
+  // プロジェクト名更新処理
+  const handleUpdateProject = () => {
+    if (editedProjectName.trim() === '') {
+      setEditedProjectName(project.name);
+      setEditingProjectMode(false);
+    } else {
+      updateProject({
+        id: project.id,
+        name: editedProjectName
+      });
+    }
+    setEditingProjectMode(false);
+  };
 
   // タスク名入力処理
   const handleInputTaskName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -109,7 +114,7 @@ const Project: FC<Props> = ({ project }) => {
         <Flex justify='space-between' align='center' mb={3}>
           {editingProjectMode ? (
             <FormControl>
-              <Input ref={inputRef} fontSize='xs' type='text' placeholder='プロジェクト名を入力してください' value={editedProjectName} onBlur={handleEditingProjectMode} onChange={handleEditedProjectName} />
+              <Input ref={inputRef} fontSize='xs' type='text' placeholder='プロジェクト名を入力してください' value={editedProjectName} onBlur={handleUpdateProject} onChange={handleEditedProjectName} />
             </FormControl>
           ) : (
             <Heading fontSize='xs' onClick={handleEditingProjectMode} py={3}>{editedProjectName}</Heading>
