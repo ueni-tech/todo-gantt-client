@@ -6,6 +6,7 @@ import React, { ChangeEvent, FC, useState } from 'react'
 type Props = {
   task: {
     id: string,
+    project_id: number,
     name: string,
     start_date: string,
     end_date: string,
@@ -14,22 +15,25 @@ type Props = {
 }
 
 const Task: FC<Props> = ({ task }) => {
-  const { deleteTask } = useTasks('http://localhost:3001/tasks');
-  const { isOpen: isUpdateTaskOpen, onOpen: onUpdateTaskOpen, onClose: onUpdateTaskClose } = useDisclosure();
-  const [ updateTask, setUpdateTask ] = useState(task);
+  const { deleteTask, updateTask } = useTasks('http://localhost:3001/tasks');
+  const { isOpen: isUpdateTaskDataOpen, onOpen: onUpdateTaskDataOpen, onClose: onUpdateTaskDataClose } = useDisclosure();
+  const [ updateTaskData, setUpdateTaskData ] = useState(task);
 
   // タスク名変更処理
-  const handleUpdateTaskNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setUpdateTask({ ...updateTask, name: e.target.value });
+  const handleUpdateTaskDataNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUpdateTaskData({ ...updateTaskData, name: e.target.value });
   }
 
   // タスク編集処理
-  const handleUpdateTask = () => { }
+  const handleUpdateTaskData = () => {
+    updateTask(updateTaskData);
+    onUpdateTaskDataClose();
+  }
 
   // タスク編集用モーダルを閉じる処理
-  const onUpdateTaskModalClose = () => {
-    setUpdateTask(task);
-    onUpdateTaskClose();
+  const onUpdateTaskDataModalClose = () => {
+    setUpdateTaskData(task);
+    onUpdateTaskDataClose();
   }
 
   return (
@@ -41,7 +45,7 @@ const Task: FC<Props> = ({ task }) => {
             <Text fontSize='xs' noOfLines={1} >{task.name}</Text>
           </Flex>
           <Flex gap={3}>
-            <EditIcon cursor='pointer' color='blackAlpha.300' _hover={{ color: 'blackAlpha.700' }}  onClick={onUpdateTaskOpen} />
+            <EditIcon cursor='pointer' color='blackAlpha.300' _hover={{ color: 'blackAlpha.700' }}  onClick={onUpdateTaskDataOpen} />
             <Popover>
               <PopoverTrigger>
                 <DeleteIcon color='red.100' cursor='pointer' _hover={{ color: 'red.500' }} />
@@ -59,7 +63,7 @@ const Task: FC<Props> = ({ task }) => {
         </Flex>
       </Box>
 
-      <Modal isOpen={isUpdateTaskOpen} onClose={onUpdateTaskModalClose}>
+      <Modal isOpen={isUpdateTaskDataOpen} onClose={onUpdateTaskDataModalClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>タスクを編集</ModalHeader>
@@ -68,23 +72,23 @@ const Task: FC<Props> = ({ task }) => {
             <Stack spacing={4}>
               <FormControl>
                 <FormLabel>タスク名</FormLabel>
-                <Input type='text' placeholder='タスク名' value={updateTask.name} onChange={handleUpdateTaskNameChange} />
+                <Input type='text' placeholder='タスク名' value={updateTaskData.name} onChange={handleUpdateTaskDataNameChange} />
               </FormControl>
               <FormControl>
                 <FormLabel>開始日</FormLabel>
-                <Input type='date' value={updateTask.start_date} onChange={(e)=>setUpdateTask({...updateTask, start_date: e.target.value})} />
+                <Input type='date' value={updateTaskData.start_date} onChange={(e)=>setUpdateTaskData({...updateTaskData, start_date: e.target.value})} />
               </FormControl>
               <FormControl>
                 <FormLabel>終了日</FormLabel>
-                <Input type='date' value={updateTask.end_date} onChange={(e)=>setUpdateTask({...updateTask, end_date: e.target.value})} />
+                <Input type='date' value={updateTaskData.end_date} onChange={(e)=>setUpdateTaskData({...updateTaskData, end_date: e.target.value})} />
               </FormControl>
             </Stack>
           </ModalBody>
           <ModalFooter>
-            <Button size='sm' colorScheme="blue" mr={3} onClick={handleUpdateTask}>
+            <Button size='sm' colorScheme="blue" mr={3} onClick={handleUpdateTaskData}>
               編集
             </Button>
-            <Button size='sm' variant="outline" onClick={onUpdateTaskModalClose} >
+            <Button size='sm' variant="outline" onClick={onUpdateTaskDataModalClose} >
               キャンセル
             </Button>
           </ModalFooter>

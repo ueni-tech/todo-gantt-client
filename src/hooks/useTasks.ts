@@ -27,6 +27,7 @@ const useTasks = (url: string) => {
       .catch(error => console.error('タスクの追加に失敗しました', error));
   };
 
+  // タスクを削除する関数
   const deleteTask = async (id: string) => {
     await axios.delete(`${url}/${id}`)
       .then(() => {
@@ -35,7 +36,16 @@ const useTasks = (url: string) => {
       .catch(error => console.error('タスクの削除に失敗しました', error));
   }
 
-  return { tasks, error, addTask, deleteTask };
+  // タスクを更新する関数
+  const updateTask = async (task: Task) => {
+    await axios.put(`${url}/${task.id}`, task)
+      .then(() => {
+        mutate();
+      })
+      .catch(error => console.error('タスクの更新に失敗しました', error));
+  }
+
+  return { tasks, error, addTask, deleteTask, updateTask };
 };
 
 export default useTasks;
