@@ -36,7 +36,7 @@ const Project: FC<Props> = ({ project }) => {
     // tasksをproject_idでフィルタリングして更新
     if (tasks) {
       const filteredData = tasks.filter((task: Task) => {
-        return Number(task.project_id) === Number(project.id);
+        return task.project_id === project.id;
       });
       setFilteredTasks(filteredData);
     }

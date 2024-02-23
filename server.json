@@ -1,49 +1,29 @@
 {
   "projects": [
     {
-      "id": "1",
-      "name": "project 1"
+      "id": "8d89230b-9b67-4130-b8f7-5791914cebe2",
+      "name": "1"
     },
     {
-      "id": "2",
-      "name": "project 2"
-    },
-    {
-      "id": "3",
-      "name": "project 3"
-    },
-    {
-      "id": "4",
-      "name": "project 4"
-    },
-    {
-      "id": "5",
-      "name": "project 5"
+      "id": "3acb2de3-7f2d-4cb1-87fa-8b6050e9ee35",
+      "name": "2"
     }
   ],
   "tasks": [
     {
-      "id": "a0244ddb-3b2b-42e2-a6b5-835cc20d968d",
-      "project_id": "2",
-      "name": "aaaa",
-      "start_date": "2024-02-23",
-      "end_date": "2024-02-25",
-      "is_completed": false
-    },
-    {
-      "id": "e833fa7c-4264-4c09-8a35-10bfbfea8429",
-      "project_id": "3",
-      "name": "bbbb",
+      "id": "127e0687-6a52-4956-881f-1aa0c860edd8",
+      "project_id": "8d89230b-9b67-4130-b8f7-5791914cebe2",
+      "name": "1-1",
       "start_date": "2024-02-23",
       "end_date": "2024-02-24",
       "is_completed": false
     },
     {
-      "id": "3c8df4d9-342a-49d7-a048-ae00ece18eca",
-      "project_id": "2",
-      "name": "ggggg",
-      "start_date": "2024-02-28",
-      "end_date": "2024-03-05",
+      "id": "1c7865f2-427d-43c9-a87b-3acb36271033",
+      "project_id": "3acb2de3-7f2d-4cb1-87fa-8b6050e9ee35",
+      "name": "2-1",
+      "start_date": "2024-02-25",
+      "end_date": "2024-02-28",
       "is_completed": false
     }
   ]

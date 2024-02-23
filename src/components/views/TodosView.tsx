@@ -2,6 +2,9 @@ import { Button, FormControl, FormHelperText, FormLabel, IconButton, Input, Simp
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import Project from '../todo/Project'
 import { AddIcon } from '@chakra-ui/icons'
+import useProjects from '@/hooks/useProjects'
+import { v4 as uuidv4 } from 'uuid'
+
 
 type Project = {
   id: number,
@@ -9,20 +12,9 @@ type Project = {
 }
 
 const TodosView = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const { projects, addProject, deleteProject, updateProject } = useProjects('http://localhost:3001/projects');
   const [projectName, setProjectName] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  useEffect(() => {
-    // server.jsonのprojectsを読み込む
-    const initProjects = async () => {
-      const res = await fetch('http://localhost:3001/projects');
-      const data = await res.json();
-      setProjects(data);
-    }
-
-    initProjects();
-  }, []);
 
   // プロジェクト名入力時の処理
   const handleInputProjectName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -31,13 +23,13 @@ const TodosView = () => {
 
   // プロジェクト作成時の処理
   const handleCreateProject = () => {
+    if (!projectName.trim()) return;
     const newProject = {
-      id: projects.length + 1,
+      id: uuidv4(),
       name: projectName
     }
-    setProjects([...projects, newProject]);
-    setProjectName('');
-    onClose();
+    addProject(newProject);
+    onModalClose();
   }
 
   // モーダルを閉じる処理
@@ -49,13 +41,13 @@ const TodosView = () => {
   return (
     <>
       <SimpleGrid columns={{ base: 2, md: 3, lg: 4, xl: 5 }} spacing={6}>
-        {projects.map((project) => (
+        {projects?.map((project: Project) => (
           <Project key={project.id} project={project} />
         ))}
         <IconButton size='sm' bgColor='gray.300' w='20px' aria-label="add project" icon={<AddIcon color='white' />} shadow='base' onClick={onOpen} />
       </SimpleGrid>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onModalClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>プロジェクトを作成</ModalHeader>
