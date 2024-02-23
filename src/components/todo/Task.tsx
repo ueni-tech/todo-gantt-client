@@ -1,12 +1,14 @@
 import useTasks from '@/hooks/useTasks'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { Box, Button, Checkbox, Flex, FormControl, FormLabel, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Stack, Text, useDisclosure } from '@chakra-ui/react'
-import React, { FC } from 'react'
+import React, { ChangeEvent, FC, useState } from 'react'
 
 type Props = {
   task: {
     id: string,
     name: string,
+    start_date: string,
+    end_date: string,
     is_completed: boolean
   }
 }
@@ -14,12 +16,19 @@ type Props = {
 const Task: FC<Props> = ({ task }) => {
   const { deleteTask } = useTasks('http://localhost:3001/tasks');
   const { isOpen: isUpdateTaskOpen, onOpen: onUpdateTaskOpen, onClose: onUpdateTaskClose } = useDisclosure();
+  const [ updateTask, setUpdateTask ] = useState(task);
+
+  // タスク名変更処理
+  const handleUpdateTaskNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUpdateTask({ ...updateTask, name: e.target.value });
+  }
 
   // タスク編集処理
   const handleUpdateTask = () => { }
 
   // タスク編集用モーダルを閉じる処理
   const onUpdateTaskModalClose = () => {
+    setUpdateTask(task);
     onUpdateTaskClose();
   }
 
@@ -50,7 +59,7 @@ const Task: FC<Props> = ({ task }) => {
         </Flex>
       </Box>
 
-      <Modal isOpen={isUpdateTaskOpen} onClose={onUpdateTaskClose}>
+      <Modal isOpen={isUpdateTaskOpen} onClose={onUpdateTaskModalClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>タスクを編集</ModalHeader>
@@ -59,15 +68,15 @@ const Task: FC<Props> = ({ task }) => {
             <Stack spacing={4}>
               <FormControl>
                 <FormLabel>タスク名</FormLabel>
-                <Input type='text' placeholder='タスク名' />
+                <Input type='text' placeholder='タスク名' value={updateTask.name} onChange={handleUpdateTaskNameChange} />
               </FormControl>
               <FormControl>
                 <FormLabel>開始日</FormLabel>
-                <Input type='date' />
+                <Input type='date' value={updateTask.start_date} onChange={(e)=>setUpdateTask({...updateTask, start_date: e.target.value})} />
               </FormControl>
               <FormControl>
                 <FormLabel>終了日</FormLabel>
-                <Input type='date' />
+                <Input type='date' value={updateTask.end_date} onChange={(e)=>setUpdateTask({...updateTask, end_date: e.target.value})} />
               </FormControl>
             </Stack>
           </ModalBody>

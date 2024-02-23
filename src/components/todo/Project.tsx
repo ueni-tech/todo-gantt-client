@@ -139,7 +139,7 @@ const Project: FC<Props> = ({ project, tasks, addTask }) => {
         </Stack>
       </Box>
 
-      <Modal isOpen={isCreateTaskOpen} onClose={onCreateTaskClose}>
+      <Modal isOpen={isCreateTaskOpen} onClose={onModalClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>タスクを作成</ModalHeader>
