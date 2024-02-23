@@ -3,21 +3,13 @@ import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
 import Task from './Task'
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
 import { v4 as uuidv4 } from 'uuid'
+import useTasks from '@/hooks/useTasks'
 
 type Props = {
   project: {
     id: number,
     name: string,
-  },
-  tasks: {
-    id: string,
-    project_id: number,
-    name: string,
-    start_date: string,
-    end_date: string,
-    is_completed: boolean
-  }[],
-  addTask: (task: Task) => void
+  }
 }
 
 type Task = {
@@ -29,7 +21,8 @@ type Task = {
   is_completed: boolean
 }
 
-const Project: FC<Props> = ({ project, tasks, addTask }) => {
+const Project: FC<Props> = ({ project }) => {
+  const { tasks, addTask } = useTasks('http://localhost:3001/tasks');
   const { isOpen: isCreateTaskOpen, onOpen: onCreateTaskOpen, onClose: onCreateTaskClose } = useDisclosure();
   const [editingProjectMode, setEditingProjectMode] = useState(false);
   const [editedProjectName, setEditedProjectName] = useState(project.name);
@@ -41,10 +34,12 @@ const Project: FC<Props> = ({ project, tasks, addTask }) => {
 
   useEffect(() => {
     // tasksをproject_idでフィルタリングして更新
-    const filteredData = tasks.filter((task: Task) => {
-      return Number(task.project_id) === Number(project.id);
-    });
-    setFilteredTasks(filteredData);
+    if (tasks) {
+      const filteredData = tasks.filter((task: Task) => {
+        return Number(task.project_id) === Number(project.id);
+      });
+      setFilteredTasks(filteredData);
+    }
   }, [tasks, project.id]);
 
 
