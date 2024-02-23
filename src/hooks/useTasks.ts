@@ -27,7 +27,7 @@ const useTasks = (url: string) => {
       .catch(error => console.error('タスクの追加に失敗しました', error));
   };
 
-  const deleteTask = async (id: number) => {
+  const deleteTask = async (id: string) => {
     await axios.delete(`${url}/${id}`)
       .then(() => {
         mutate();
