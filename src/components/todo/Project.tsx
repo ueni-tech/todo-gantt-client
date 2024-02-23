@@ -30,7 +30,7 @@ type Task = {
 }
 
 const Project: FC<Props> = ({ project, tasks, addTask }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isCreateTaskOpen, onOpen: onCreateTaskOpen, onClose: onCreateTaskClose } = useDisclosure();
   const [editingProjectMode, setEditingProjectMode] = useState(false);
   const [editedProjectName, setEditedProjectName] = useState(project.name);
   const [editStartProjectName, setEditStartProjectName] = useState('');
@@ -41,7 +41,7 @@ const Project: FC<Props> = ({ project, tasks, addTask }) => {
 
   useEffect(() => {
     // tasksをproject_idでフィルタリングして更新
-    const filteredData = tasks.filter((task: Task) =>{
+    const filteredData = tasks.filter((task: Task) => {
       return Number(task.project_id) === Number(project.id);
     });
     setFilteredTasks(filteredData);
@@ -98,79 +98,80 @@ const Project: FC<Props> = ({ project, tasks, addTask }) => {
   }
 
 
-  // モーダルを閉じる処理
+  // タスク作成用モーダルを閉じる処理
   const onModalClose = () => {
     setTaskName('');
     setStartDate('');
     setEndDate('');
-    onClose();
+    onCreateTaskClose();
   }
 
-    return (
-      <>
-        <Box p={4} bgColor='blackAlpha.300' borderRadius='md' shadow='base'>
-          <Flex justify='space-between' align='center' mb={3}>
-            {editingProjectMode ? (
+  return (
+    <>
+      <Box p={4} bgColor='blackAlpha.300' borderRadius='md' shadow='base'>
+        <Flex justify='space-between' align='center' mb={3}>
+          {editingProjectMode ? (
+            <FormControl>
+              <Input ref={inputRef} fontSize='xs' type='text' placeholder='プロジェクト名を入力してください' value={editedProjectName} onBlur={handleEditingProjectMode} onChange={handleEditedProjectName} />
+            </FormControl>
+          ) : (
+            <Heading fontSize='xs' onClick={handleEditingProjectMode} py={3}>{editedProjectName}</Heading>
+          )}
+          <Popover>
+            <PopoverTrigger>
+              <DeleteIcon color='blackAlpha.200' cursor='pointer' _hover={{ color: 'blackAlpha.500' }} />
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverCloseButton />
+              <PopoverHeader>このプロジェクトを削除しますか？</PopoverHeader>
+              <PopoverBody>
+                <Button colorScheme='red' variant='outline' size='sm'>削除</Button>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
+        </Flex>
+        <Stack spacing={4}>
+          {filteredTasks.map((task) => (
+            <Task key={task.id} task={task} />
+          ))}
+          <IconButton size='sm' colorScheme='blackAlpha' w='20px' aria-label="add task" icon={<AddIcon />} shadow='base' onClick={onCreateTaskOpen} />
+        </Stack>
+      </Box>
+
+      <Modal isOpen={isCreateTaskOpen} onClose={onCreateTaskClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>タスクを作成</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Stack spacing={4}>
               <FormControl>
-                <Input ref={inputRef} fontSize='xs' type='text' placeholder='プロジェクト名を入力してください' value={editedProjectName} onBlur={handleEditingProjectMode} onChange={handleEditedProjectName} />
+                <FormLabel>タスク名</FormLabel>
+                <Input type='text' placeholder='タスク名' value={taskName} onChange={handleInputTaskName} />
               </FormControl>
-            ) : (
-              <Heading fontSize='xs' onClick={handleEditingProjectMode} py={3}>{editedProjectName}</Heading>
-            )}
-            <Popover>
-              <PopoverTrigger>
-                <DeleteIcon color='blackAlpha.200' cursor='pointer' _hover={{ color: 'blackAlpha.500' }} />
-              </PopoverTrigger>
-              <PopoverContent>
-                <PopoverArrow />
-                <PopoverCloseButton />
-                <PopoverHeader>このプロジェクトを削除しますか？</PopoverHeader>
-                <PopoverBody>
-                  <Button colorScheme='red' variant='outline' size='sm'>削除</Button>
-                </PopoverBody>
-              </PopoverContent>
-            </Popover>
-          </Flex>
-          <Stack spacing={4}>
-            {filteredTasks.map((task) => (
-              <Task key={task.id} task={task} />
-            ))}
-            <IconButton size='sm' colorScheme='blackAlpha' w='20px' aria-label="add task" icon={<AddIcon />} shadow='base' onClick={onOpen} />
-          </Stack>
-        </Box>
-        <Modal isOpen={isOpen} onClose={onModalClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>タスクを作成</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Stack spacing={4}>
-                <FormControl>
-                  <FormLabel>タスク名</FormLabel>
-                  <Input type='text' placeholder='タスク名' value={taskName} onChange={handleInputTaskName} />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>開始日</FormLabel>
-                  <Input type='date' value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-                </FormControl>
-                <FormControl>
-                  <FormLabel>終了日</FormLabel>
-                  <Input type='date' value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-                </FormControl>
-              </Stack>
-            </ModalBody>
-            <ModalFooter>
-              <Button size='sm' colorScheme="blue" mr={3} onClick={handleCreateTask}>
-                作成
-              </Button>
-              <Button size='sm' variant="outline" onClick={onModalClose} >
-                キャンセル
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </>
-    )
-  }
+              <FormControl>
+                <FormLabel>開始日</FormLabel>
+                <Input type='date' value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+              </FormControl>
+              <FormControl>
+                <FormLabel>終了日</FormLabel>
+                <Input type='date' value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+              </FormControl>
+            </Stack>
+          </ModalBody>
+          <ModalFooter>
+            <Button size='sm' colorScheme="blue" mr={3} onClick={handleCreateTask}>
+              作成
+            </Button>
+            <Button size='sm' variant="outline" onClick={onModalClose} >
+              キャンセル
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  )
+}
 
-  export default Project
+export default Project
