@@ -9,15 +9,6 @@ type Project = {
   name: string
 }
 
-type Task = {
-  id: number,
-  project_id: number,
-  name: string,
-  start_date: string,
-  end_date: string,
-  is_completed: boolean
-}
-
 const TodosView = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [projectName, setProjectName] = useState('');

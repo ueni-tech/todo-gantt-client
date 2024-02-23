@@ -2,6 +2,7 @@ import { Box, Button, Flex, FormControl, Heading, IconButton, Input, Popover, Po
 import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
 import Task from './Task'
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
+import { v4 as uuidv4 } from 'uuid'
 
 type Props = {
   project: {
@@ -9,7 +10,7 @@ type Props = {
     name: string,
   },
   tasks: {
-    id: number,
+    id: string,
     project_id: number,
     name: string,
     start_date: string,
@@ -20,7 +21,7 @@ type Props = {
 }
 
 type Task = {
-  id: number,
+  id: string,
   project_id: number,
   name: string,
   start_date: string,
@@ -40,7 +41,9 @@ const Project: FC<Props> = ({ project, tasks, addTask }) => {
 
   useEffect(() => {
     // tasksをproject_idでフィルタリングして更新
-    const filteredData = tasks.filter((task: Task) => task.project_id === project.id);
+    const filteredData = tasks.filter((task: Task) =>{
+      return Number(task.project_id) === Number(project.id);
+    });
     setFilteredTasks(filteredData);
   }, [tasks, project.id]);
 
@@ -83,7 +86,7 @@ const Project: FC<Props> = ({ project, tasks, addTask }) => {
     }
 
     addTask({
-      id: tasks.length + 1,
+      id: uuidv4(),
       project_id: project.id,
       name: taskName,
       start_date: startDate,

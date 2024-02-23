@@ -2,7 +2,7 @@ import axios from 'axios';
 import useSWR from 'swr';
 
 type Task = {
-  id: number;
+  id: string;
   project_id: number;
   name: string;
   start_date: string;
@@ -27,7 +27,15 @@ const useTasks = (url: string) => {
       .catch(error => console.error('タスクの追加に失敗しました', error));
   };
 
-  return { tasks, error, addTask };
+  const deleteTask = async (id: number) => {
+    await axios.delete(`${url}/${id}`)
+      .then(() => {
+        mutate();
+      })
+      .catch(error => console.error('タスクの削除に失敗しました', error));
+  }
+
+  return { tasks, error, addTask, deleteTask };
 };
 
 export default useTasks;
