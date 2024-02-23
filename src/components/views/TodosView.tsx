@@ -7,12 +7,12 @@ import { v4 as uuidv4 } from 'uuid'
 
 
 type Project = {
-  id: number,
+  id: string,
   name: string
 }
 
 const TodosView = () => {
-  const { projects, addProject, deleteProject, updateProject } = useProjects('http://localhost:3001/projects');
+  const { projects, addProject } = useProjects('http://localhost:3001/projects');
   const [projectName, setProjectName] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
 

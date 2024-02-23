@@ -3,7 +3,7 @@ import useSWR from 'swr';
 
 type Task = {
   id: string;
-  project_id: number;
+  project_id: string;
   name: string;
   start_date: string;
   end_date: string;

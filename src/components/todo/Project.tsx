@@ -4,17 +4,18 @@ import Task from './Task'
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
 import { v4 as uuidv4 } from 'uuid'
 import useTasks from '@/hooks/useTasks'
+import useProjects from '@/hooks/useProjects'
 
 type Props = {
   project: {
-    id: number,
+    id: string,
     name: string,
   }
 }
 
 type Task = {
   id: string,
-  project_id: number,
+  project_id: string,
   name: string,
   start_date: string,
   end_date: string,
@@ -22,6 +23,7 @@ type Task = {
 }
 
 const Project: FC<Props> = ({ project }) => {
+  const { deleteProject } = useProjects('http://localhost:3001/projects');
   const { tasks, addTask } = useTasks('http://localhost:3001/tasks');
   const { isOpen: isCreateTaskOpen, onOpen: onCreateTaskOpen, onClose: onCreateTaskClose } = useDisclosure();
   const [editingProjectMode, setEditingProjectMode] = useState(false);
@@ -121,7 +123,7 @@ const Project: FC<Props> = ({ project }) => {
               <PopoverCloseButton />
               <PopoverHeader>このプロジェクトを削除しますか？</PopoverHeader>
               <PopoverBody>
-                <Button colorScheme='red' variant='outline' size='sm'>削除</Button>
+                <Button colorScheme='red' variant='outline' size='sm' onClick={()=>deleteProject(project.id)}>削除</Button>
               </PopoverBody>
             </PopoverContent>
           </Popover>

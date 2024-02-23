@@ -6,7 +6,7 @@ import React, { ChangeEvent, FC, useState } from 'react'
 type Props = {
   task: {
     id: string,
-    project_id: number,
+    project_id: string,
     name: string,
     start_date: string,
     end_date: string,
