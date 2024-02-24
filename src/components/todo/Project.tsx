@@ -135,7 +135,7 @@ const Project: FC<Props> = ({ project }) => {
         <Flex justify='space-between' align='center' mb={3}>
           {editingProjectMode ? (
             <FormControl>
-              <Input ref={inputRef} fontSize='sm' type='text' placeholder='プロジェクト名を入力してください' value={editedProjectName} onBlur={handleUpdateProject} onChange={handleEditedProjectName} />
+              <Input ref={inputRef} fontSize='sm' type='text' placeholder='プロジェクト名を入力' value={editedProjectName} onBlur={handleUpdateProject} onChange={handleEditedProjectName} />
             </FormControl>
           ) : (
             <Heading fontSize='sm' my={2} onClick={handleEditingProjectMode} noOfLines={1}>{editedProjectName}</Heading>
@@ -194,7 +194,7 @@ const Project: FC<Props> = ({ project }) => {
             <Stack spacing={4}>
               <FormControl>
                 <FormLabel>タスク名</FormLabel>
-                <Input type='text' placeholder='タスク名' value={taskName} onChange={handleInputTaskName} />
+                <Input type='text' placeholder='タスク名を入力' value={taskName} onChange={handleInputTaskName} />
               </FormControl>
               <FormControl>
                 <FormLabel>開始日</FormLabel>

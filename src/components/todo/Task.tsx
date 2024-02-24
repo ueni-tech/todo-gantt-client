@@ -84,7 +84,7 @@ const Task: FC<Props> = ({ task }) => {
             <Stack spacing={4}>
               <FormControl>
                 <FormLabel>タスク名</FormLabel>
-                <Input type='text' placeholder='タスク名' value={updateTaskData.name} onChange={handleUpdateTaskDataNameChange} />
+                <Input type='text' placeholder='タスク名を入力' value={updateTaskData.name} onChange={handleUpdateTaskDataNameChange} />
               </FormControl>
               <FormControl>
                 <FormLabel>開始日</FormLabel>

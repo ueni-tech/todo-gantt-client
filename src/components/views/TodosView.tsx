@@ -61,7 +61,7 @@ const TodosView = () => {
           <ModalBody>
             <FormControl>
               <FormLabel>プロジェクト名</FormLabel>
-              <Input type='text' placeholder='プロジェクト名' onChange={handleInputProjectName} value={projectName} />
+              <Input type='text' placeholder='プロジェクト名を入力' onChange={handleInputProjectName} value={projectName} />
             </FormControl>
           </ModalBody>
           <ModalFooter>
