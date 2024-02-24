@@ -1,7 +1,7 @@
 import useTasks from '@/hooks/useTasks'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { Box, Button, Checkbox, Flex, FormControl, FormLabel, Heading, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Stack, Text, useDisclosure } from '@chakra-ui/react'
-import React, { ChangeEvent, FC, useState } from 'react'
+import React, { ChangeEvent, FC, memo, useState } from 'react'
 
 type Props = {
   task: {
@@ -14,7 +14,7 @@ type Props = {
   }
 }
 
-const Task: FC<Props> = ({ task }) => {
+const Task: FC<Props> = memo(({ task }) => {
   const { deleteTask, updateTask } = useTasks('http://localhost:3001/tasks');
   const { isOpen: isUpdateTaskDataOpen, onOpen: onUpdateTaskDataOpen, onClose: onUpdateTaskDataClose } = useDisclosure();
   const [updateTaskData, setUpdateTaskData] = useState(task);
@@ -108,6 +108,6 @@ const Task: FC<Props> = ({ task }) => {
       </Modal>
     </>
   )
-}
+});
 
 export default Task
