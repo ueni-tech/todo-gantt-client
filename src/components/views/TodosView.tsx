@@ -1,5 +1,5 @@
 import { Button, FormControl, FormHelperText, FormLabel, IconButton, Input, SimpleGrid, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react'
 import Project from '../todo/Project'
 import { AddIcon } from '@chakra-ui/icons'
 import useProjects from '@/hooks/useProjects'
@@ -34,7 +34,7 @@ const TodosView = () => {
   }
 
   // プロジェクト名が空かどうかでボタンを制御
-  useEffect(() => {
+  useMemo(() => {
     setIsDisabled(!projectName.trim());
   }, [projectName]);
 

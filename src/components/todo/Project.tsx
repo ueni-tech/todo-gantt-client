@@ -1,5 +1,5 @@
 import { Box, Button, Flex, FormControl, Heading, IconButton, Input, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Stack, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure, FormLabel } from '@chakra-ui/react'
-import React, { ChangeEvent, FC, memo, useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, FC, memo, useEffect, useMemo, useRef, useState } from 'react'
 import Task from './Task'
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
 import { v4 as uuidv4 } from 'uuid'
@@ -33,7 +33,7 @@ const nextDay = () => {
   return `${date.getFullYear()}-${('00' + (date.getMonth() + 1)).slice(-2)}-${('00' + date.getDate()).slice(-2)}`;
 }
 
-const Project: FC<Props> =memo(({ project }) => {
+const Project: FC<Props> = memo(({ project }) => {
   const { deleteProject, updateProject } = useProjects('http://localhost:3001/projects');
   const { tasks, addTask } = useTasks('http://localhost:3001/tasks');
   const { isOpen: isCreateTaskOpen, onOpen: onCreateTaskOpen, onClose: onCreateTaskClose } = useDisclosure();
@@ -112,13 +112,13 @@ const Project: FC<Props> =memo(({ project }) => {
   }
 
   // タスクの項目が空かどうかでボタンを制御
-  useEffect(() => {
+  useMemo(() => {
     if (taskName.trim() === '' || startDate.trim() === '' || endDate.trim() === '') {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
     }
-  }, [taskName, startDate, endDate]);
+  }, [taskName, startDate, endDate])
 
 
   // タスク作成用モーダルを閉じる処理
