@@ -111,6 +111,15 @@ const Project: FC<Props> = ({ project }) => {
     onModalClose();
   }
 
+  // タスクの項目が空かどうかでボタンを制御
+  useEffect(() => {
+    if (taskName.trim() === '' || startDate.trim() === '' || endDate.trim() === '') {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [taskName, startDate, endDate]);
+
 
   // タスク作成用モーダルを閉じる処理
   const onModalClose = () => {
@@ -146,31 +155,33 @@ const Project: FC<Props> = ({ project }) => {
           </Popover>
         </Flex>
         <Box>
-          <Stack
-            pr={1}
-            spacing={4}
-            maxHeight="224px"
-            overflowY="auto"
-            sx={{
-              '&::-webkit-scrollbar': {
-                width: '5px',
-              },
-              '&::-webkit-scrollbar-track': {
-                background: '#f1f1f1',
-              },
-              '&::-webkit-scrollbar-thumb': {
-                background: '#888',
-              },
-              '&::-webkit-scrollbar-thumb:hover': {
-                background: '#555',
-              }
-            }}
-          >
-            {filteredTasks.map((task) => (
-              <Task key={task.id} task={task} />
-            ))}
-          </Stack>
-          <IconButton mt={4} size='sm' colorScheme='blackAlpha' w='20px' aria-label="add task" icon={<AddIcon />} shadow='base' onClick={onCreateTaskOpen} />
+          {filteredTasks.length > 0 &&
+            <Stack
+              mb={4}
+              pr={1}
+              spacing={4}
+              maxHeight="224px"
+              overflowY="auto"
+              sx={{
+                '&::-webkit-scrollbar': {
+                  width: '5px',
+                },
+                '&::-webkit-scrollbar-track': {
+                  background: '#f1f1f1',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  background: '#888',
+                },
+                '&::-webkit-scrollbar-thumb:hover': {
+                  background: '#555',
+                }
+              }}
+            >
+              {filteredTasks.map((task) => (
+                <Task key={task.id} task={task} />
+              ))}
+            </Stack>}
+          <IconButton size='sm' colorScheme='blackAlpha' w='20px' aria-label="add task" icon={<AddIcon />} shadow='base' onClick={onCreateTaskOpen} />
         </Box>
       </Box>
 

@@ -15,6 +15,7 @@ const TodosView = () => {
   const { projects, addProject } = useProjects('http://localhost:3001/projects');
   const [projectName, setProjectName] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isDisabled, setIsDisabled] = useState(true);
 
   // プロジェクト名入力時の処理
   const handleInputProjectName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +32,11 @@ const TodosView = () => {
     addProject(newProject);
     onModalClose();
   }
+
+  // プロジェクト名が空かどうかでボタンを制御
+  useEffect(() => {
+    setIsDisabled(!projectName.trim());
+  }, [projectName]);
 
   // モーダルを閉じる処理
   const onModalClose = () => {
@@ -59,7 +65,7 @@ const TodosView = () => {
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button size='sm' colorScheme="blue" mr={3} onClick={handleCreateProject} >
+            <Button size='sm' colorScheme="blue" mr={3} onClick={handleCreateProject} isDisabled={isDisabled} >
               作成
             </Button>
             <Button size='sm' variant="outline" onClick={onModalClose}>

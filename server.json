@@ -7,6 +7,10 @@
     {
       "id": "96eabeb5-44d4-40be-8c82-6282477d991b",
       "name": "テスト"
+    },
+    {
+      "id": "d55af64c-2627-49f9-9f0e-caf8b4acbdd3",
+      "name": "fadaf"
     }
   ],
   "tasks": [
@@ -54,14 +58,6 @@
       "id": "8985e41c-ce8c-4d6c-b84e-de1bac79923f",
       "project_id": "96eabeb5-44d4-40be-8c82-6282477d991b",
       "name": "55555555",
-      "start_date": "2024-02-24",
-      "end_date": "2024-02-25",
-      "is_completed": false
-    },
-    {
-      "id": "2a5c5959-20e6-462a-a727-8b8d0b8d299f",
-      "project_id": "8d89230b-9b67-4130-b8f7-5791914cebe2",
-      "name": "1-6",
       "start_date": "2024-02-24",
       "end_date": "2024-02-25",
       "is_completed": false
