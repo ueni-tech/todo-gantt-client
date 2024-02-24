@@ -1,6 +1,6 @@
 import useTasks from '@/hooks/useTasks'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
-import { Box, Button, Checkbox, Flex, FormControl, FormLabel, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Stack, Text, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, Checkbox, Flex, FormControl, FormLabel, Heading, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Stack, Text, useDisclosure } from '@chakra-ui/react'
 import React, { ChangeEvent, FC, useState } from 'react'
 
 type Props = {
@@ -17,7 +17,7 @@ type Props = {
 const Task: FC<Props> = ({ task }) => {
   const { deleteTask, updateTask } = useTasks('http://localhost:3001/tasks');
   const { isOpen: isUpdateTaskDataOpen, onOpen: onUpdateTaskDataOpen, onClose: onUpdateTaskDataClose } = useDisclosure();
-  const [ updateTaskData, setUpdateTaskData ] = useState(task);
+  const [updateTaskData, setUpdateTaskData] = useState(task);
 
   // タスク名変更処理
   const handleUpdateTaskDataNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,16 +36,28 @@ const Task: FC<Props> = ({ task }) => {
     onUpdateTaskDataClose();
   }
 
+  // チェックボックスクリック時の処理
+  const handleChangeCheckBox = () => {
+    const newTask = {
+      ...task,
+      is_completed: !task.is_completed
+    }
+    updateTask(newTask);
+  }
+
   return (
     <>
       <Box shadow='base'>
         <Flex p={3} bgColor='white' borderRadius='md' justify='space-between'>
-          <Flex justify='center' align='center'>
-            <Checkbox mr={2} />
-            <Text fontSize='xs' noOfLines={1} >{task.name}</Text>
+          <Flex justify='center' align='center' overflow='hidden'>
+            <Checkbox mr={2} onChange={handleChangeCheckBox} />
+            {task.is_completed ?
+              <Text fontSize='xs' noOfLines={1} color='gray.500' textDecoration='line-through'>{task.name}</Text>
+              :
+              <Text fontSize='xs' noOfLines={1}>{task.name}</Text>}
           </Flex>
-          <Flex gap={3}>
-            <EditIcon cursor='pointer' color='blackAlpha.300' _hover={{ color: 'blackAlpha.700' }}  onClick={onUpdateTaskDataOpen} />
+          <Flex ml={1} gap={3}>
+            <EditIcon cursor='pointer' color='blackAlpha.300' _hover={{ color: 'blackAlpha.700' }} onClick={onUpdateTaskDataOpen} />
             <Popover>
               <PopoverTrigger>
                 <DeleteIcon color='red.100' cursor='pointer' _hover={{ color: 'red.500' }} />
@@ -76,11 +88,11 @@ const Task: FC<Props> = ({ task }) => {
               </FormControl>
               <FormControl>
                 <FormLabel>開始日</FormLabel>
-                <Input type='date' value={updateTaskData.start_date} onChange={(e)=>setUpdateTaskData({...updateTaskData, start_date: e.target.value})} />
+                <Input type='date' value={updateTaskData.start_date} onChange={(e) => setUpdateTaskData({ ...updateTaskData, start_date: e.target.value })} />
               </FormControl>
               <FormControl>
                 <FormLabel>終了日</FormLabel>
-                <Input type='date' value={updateTaskData.end_date} onChange={(e)=>setUpdateTaskData({...updateTaskData, end_date: e.target.value})} />
+                <Input type='date' value={updateTaskData.end_date} onChange={(e) => setUpdateTaskData({ ...updateTaskData, end_date: e.target.value })} />
               </FormControl>
             </Stack>
           </ModalBody>
