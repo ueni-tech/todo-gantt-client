@@ -4,6 +4,7 @@ import Project from '../todo/Project'
 import { AddIcon } from '@chakra-ui/icons'
 import useProjects from '@/hooks/useProjects'
 import { v4 as uuidv4 } from 'uuid'
+import { NEXT_PUBLIC_BACKEND_API_URL } from '@/env'
 
 
 type Project = {
@@ -12,7 +13,7 @@ type Project = {
 }
 
 const TodosView = () => {
-  const { projects, addProject } = useProjects('http://localhost:3001/projects');
+  const { projects, addProject } = useProjects(`${NEXT_PUBLIC_BACKEND_API_URL}/projects`);
   const [projectName, setProjectName] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDisabled, setIsDisabled] = useState(true);

@@ -5,6 +5,7 @@ import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
 import { v4 as uuidv4 } from 'uuid'
 import useTasks from '@/hooks/useTasks'
 import useProjects from '@/hooks/useProjects'
+import { NEXT_PUBLIC_BACKEND_API_URL } from '@/env'
 
 type Props = {
   project: {
@@ -34,8 +35,8 @@ const nextDay = () => {
 }
 
 const Project: FC<Props> = memo(({ project }) => {
-  const { deleteProject, updateProject } = useProjects('http://localhost:3001/projects');
-  const { tasks, addTask } = useTasks('http://localhost:3001/tasks');
+  const { deleteProject, updateProject } = useProjects(`${NEXT_PUBLIC_BACKEND_API_URL}/projects`);
+  const { tasks, addTask } = useTasks(`${NEXT_PUBLIC_BACKEND_API_URL}/tasks`);
   const { isOpen: isCreateTaskOpen, onOpen: onCreateTaskOpen, onClose: onCreateTaskClose } = useDisclosure();
   const [editingProjectMode, setEditingProjectMode] = useState(false);
   const [editedProjectName, setEditedProjectName] = useState(project.name);
