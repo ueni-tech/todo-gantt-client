@@ -1,10 +1,6 @@
 import axios from 'axios';
 import useSWR from 'swr';
-
-type Project = {
-  id: string;
-  name: string;
-};
+import { ProjectType } from '../../types/types';
 
 const fetcher = async (url: string) => {
   const response = await axios.get(url);
@@ -15,7 +11,7 @@ const useProjects = (url: string) => {
   const { data: projects, mutate, error } = useSWR(url, fetcher);
 
   // プロジェクトを追加する関数
-  const addProject = async (project: Project) => {
+  const addProject = async (project: ProjectType) => {
     await axios.post(url, project)
       .then(() => {
         mutate();
@@ -24,7 +20,7 @@ const useProjects = (url: string) => {
   };
 
   // プロジェクトを削除する関数
-  const deleteProject = async (id: string) => {
+  const deleteProject = async (id: string | undefined) => {
     await axios.delete(`${url}/${id}`)
       .then(() => {
         mutate();
@@ -33,7 +29,7 @@ const useProjects = (url: string) => {
   }
 
   // プロジェクトを更新する関数
-  const updateProject = async (project: Project) => {
+  const updateProject = async (project: ProjectType) => {
     await axios.put(`${url}/${project.id}`, project)
       .then(() => {
         mutate();

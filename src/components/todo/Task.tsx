@@ -3,16 +3,10 @@ import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { Box, Button, Checkbox, Flex, FormControl, FormLabel, Heading, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Stack, Text, useDisclosure } from '@chakra-ui/react'
 import React, { ChangeEvent, FC, memo, useState } from 'react'
 import { NEXT_PUBLIC_BACKEND_API_URL } from '@/env'
+import { TaskType } from '../../../types/types'
 
 type Props = {
-  task: {
-    id: string,
-    project_id: string,
-    name: string,
-    start_date: string,
-    end_date: string,
-    is_completed: boolean
-  }
+  task: TaskType
 }
 
 const Task: FC<Props> = memo(({ task }) => {
