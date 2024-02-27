@@ -1,25 +1,14 @@
 import { Box, Button, Flex, FormControl, Heading, IconButton, Input, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Stack, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure, FormLabel } from '@chakra-ui/react'
-import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, FC, memo, useEffect, useMemo, useRef, useState } from 'react'
 import Task from './Task'
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
-import { v4 as uuidv4 } from 'uuid'
 import useTasks from '@/hooks/useTasks'
 import useProjects from '@/hooks/useProjects'
+import { NEXT_PUBLIC_BACKEND_API_URL } from '@/env'
+import { ProjectType, TaskType } from '../../../types/types'
 
 type Props = {
-  project: {
-    id: string,
-    name: string,
-  }
-}
-
-type Task = {
-  id: string,
-  project_id: string,
-  name: string,
-  start_date: string,
-  end_date: string,
-  is_completed: boolean
+  project: ProjectType
 }
 
 const today = () => {
@@ -33,13 +22,13 @@ const nextDay = () => {
   return `${date.getFullYear()}-${('00' + (date.getMonth() + 1)).slice(-2)}-${('00' + date.getDate()).slice(-2)}`;
 }
 
-const Project: FC<Props> = ({ project }) => {
-  const { deleteProject, updateProject } = useProjects('http://localhost:3001/projects');
-  const { tasks, addTask } = useTasks('http://localhost:3001/tasks');
+const Project: FC<Props> = memo(({ project }) => {
+  const { deleteProject, updateProject } = useProjects(`${NEXT_PUBLIC_BACKEND_API_URL}/projects`);
+  const { tasks, addTask } = useTasks(`${NEXT_PUBLIC_BACKEND_API_URL}/tasks`);
   const { isOpen: isCreateTaskOpen, onOpen: onCreateTaskOpen, onClose: onCreateTaskClose } = useDisclosure();
   const [editingProjectMode, setEditingProjectMode] = useState(false);
   const [editedProjectName, setEditedProjectName] = useState(project.name);
-  const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
+  const [filteredTasks, setFilteredTasks] = useState<TaskType[]>([]);
   const [taskName, setTaskName] = useState('');
   const [startDate, setStartDate] = useState(today());
   const [endDate, setEndDate] = useState(nextDay());
@@ -48,7 +37,7 @@ const Project: FC<Props> = ({ project }) => {
   useEffect(() => {
     // tasksをproject_idでフィルタリングして更新
     if (tasks) {
-      const filteredData = tasks.filter((task: Task) => {
+      const filteredData = tasks.filter((task: TaskType) => {
         return task.project_id === project.id;
       });
       setFilteredTasks(filteredData);
@@ -100,7 +89,6 @@ const Project: FC<Props> = ({ project }) => {
     }
 
     addTask({
-      id: uuidv4(),
       project_id: project.id,
       name: taskName,
       start_date: startDate,
@@ -112,13 +100,13 @@ const Project: FC<Props> = ({ project }) => {
   }
 
   // タスクの項目が空かどうかでボタンを制御
-  useEffect(() => {
+  useMemo(() => {
     if (taskName.trim() === '' || startDate.trim() === '' || endDate.trim() === '') {
       setIsDisabled(true);
     } else {
       setIsDisabled(false);
     }
-  }, [taskName, startDate, endDate]);
+  }, [taskName, startDate, endDate])
 
 
   // タスク作成用モーダルを閉じる処理
@@ -218,6 +206,6 @@ const Project: FC<Props> = ({ project }) => {
       </Modal>
     </>
   )
-}
+});
 
 export default Project

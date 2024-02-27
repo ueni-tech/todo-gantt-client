@@ -1,18 +1,13 @@
 import { Button, FormControl, FormHelperText, FormLabel, IconButton, Input, SimpleGrid, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react'
 import Project from '../todo/Project'
 import { AddIcon } from '@chakra-ui/icons'
 import useProjects from '@/hooks/useProjects'
-import { v4 as uuidv4 } from 'uuid'
-
-
-type Project = {
-  id: string,
-  name: string
-}
+import { NEXT_PUBLIC_BACKEND_API_URL } from '@/env'
+import { ProjectType } from '../../../types/types'
 
 const TodosView = () => {
-  const { projects, addProject } = useProjects('http://localhost:3001/projects');
+  const { projects, addProject } = useProjects(`${NEXT_PUBLIC_BACKEND_API_URL}/projects`);
   const [projectName, setProjectName] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDisabled, setIsDisabled] = useState(true);
@@ -26,7 +21,6 @@ const TodosView = () => {
   const handleCreateProject = () => {
     if (!projectName.trim()) return;
     const newProject = {
-      id: uuidv4(),
       name: projectName
     }
     addProject(newProject);
@@ -34,7 +28,7 @@ const TodosView = () => {
   }
 
   // プロジェクト名が空かどうかでボタンを制御
-  useEffect(() => {
+  useMemo(() => {
     setIsDisabled(!projectName.trim());
   }, [projectName]);
 
@@ -47,7 +41,7 @@ const TodosView = () => {
   return (
     <>
       <SimpleGrid columns={{ base: 2, md: 3, lg: 4, xl: 5 }} spacing={6}>
-        {projects?.map((project: Project) => (
+        {projects?.map((project: ProjectType) => (
           <Project key={project.id} project={project} />
         ))}
         <IconButton size='sm' bgColor='gray.300' w='20px' aria-label="add project" icon={<AddIcon color='white' />} shadow='base' onClick={onOpen} />

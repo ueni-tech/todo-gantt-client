@@ -1,14 +1,7 @@
 import axios from 'axios';
 import useSWR from 'swr';
+import { TaskType } from '../../types/types';
 
-type Task = {
-  id: string;
-  project_id: string;
-  name: string;
-  start_date: string;
-  end_date: string;
-  is_completed: boolean;
-};
 
 const fetcher = async (url: string) => {
   const response = await axios.get(url);
@@ -19,7 +12,7 @@ const useTasks = (url: string) => {
   const { data: tasks, mutate, error } = useSWR(url, fetcher);
 
   // タスクを追加する関数
-  const addTask = async (task: Task) => {
+  const addTask = async (task: TaskType) => {
     await axios.post(url, task)
       .then(() => {
         mutate();
@@ -28,7 +21,7 @@ const useTasks = (url: string) => {
   };
 
   // タスクを削除する関数
-  const deleteTask = async (id: string) => {
+  const deleteTask = async (id: string | undefined) => {
     await axios.delete(`${url}/${id}`)
       .then(() => {
         mutate();
@@ -37,7 +30,7 @@ const useTasks = (url: string) => {
   }
 
   // タスクを更新する関数
-  const updateTask = async (task: Task) => {
+  const updateTask = async (task: TaskType) => {
     await axios.put(`${url}/${task.id}`, task)
       .then(() => {
         mutate();

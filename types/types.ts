@@ -1,0 +1,13 @@
+export type ProjectType = {
+  id?: string;
+  name: string;
+}
+
+export type TaskType = {
+  id?: string;
+  project_id?: string;
+  name: string;
+  start_date: string;
+  end_date: string;
+  is_completed: boolean;
+}
