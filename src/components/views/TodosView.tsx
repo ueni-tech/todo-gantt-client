@@ -40,7 +40,7 @@ const TodosView = () => {
 
   return (
     <>
-      <SimpleGrid columns={{ base: 2, md: 3, lg: 4, xl: 5 }} spacing={6}>
+      <SimpleGrid p={4} columns={{ base: 2, md: 3, lg: 4, xl: 5 }} spacing={6}>
         {projects?.map((project: ProjectType) => (
           <Project key={project.id} project={project} />
         ))}
