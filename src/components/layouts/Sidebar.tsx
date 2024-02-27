@@ -3,6 +3,7 @@ import useTeams from '@/hooks/useTeams'
 import { AddIcon } from '@chakra-ui/icons'
 import { Box, Button, FormControl, FormLabel, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure } from '@chakra-ui/react'
 import React, { FC, useMemo, useState } from 'react'
+import { TeamType } from '../../../types/types'
 
 type Props = {
   headerHeight: string,
@@ -45,12 +46,11 @@ const Sidebar: FC<Props> = ({ headerHeight, sidebarWidth }) => {
     <>
       <Box bgColor="main" display='flex' flexDirection='column' justifyContent='flex-start' alignItems='center' position='fixed' top={headerHeight} left='0' bottom='0' w={sidebarWidth}>
         <Stack spacing={5}>
-          <Box as='button' w='40px' h='40px' border="2px solid #ccc" bgColor="gray.200" borderRadius="md" _hover={{ opacity: '0.7' }} shadow='base'>
-            <Image src="/images/team_icons/team_01.jpg" alt="team_01" w='100%' />
-          </Box>
-          <Box as='button' w='40px' h='40px' border="2px solid #ccc" bgColor="gray.200" borderRadius="md" _hover={{ opacity: '0.7' }} shadow='base'>
-            <Image src="/images/team_icons/team_02.webp" alt="team_02" w='100%' />
-          </Box>
+          {teams?.map((team: TeamType) => (
+            <Box key={team.id} as='button' w='40px' h='40px' border="2px solid #ccc" bgColor="gray.200" borderRadius="md" _hover={{ opacity: '0.7' }} shadow='base'>
+              <Image src="/images/team_icons/team_01.jpg" alt="team_01" w='100%' />
+            </Box>
+          ))}
           <Box as="button" w='40px' h='40px' bgColor="gray.500" borderRadius="md" display='flex' justifyContent='center' alignItems='center' _hover={{ opacity: '0.7' }} shadow='base' onClick={onOpen}>
             <AddIcon color="white" />
           </Box>
