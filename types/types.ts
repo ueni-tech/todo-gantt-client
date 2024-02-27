@@ -1,3 +1,8 @@
+export type TeamType = {
+  id?: string;
+  name: string;
+}
+
 export type ProjectType = {
   id?: string;
   name: string;

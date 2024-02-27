@@ -1,5 +1,7 @@
+import { NEXT_PUBLIC_BACKEND_API_URL } from '@/env'
+import useTeams from '@/hooks/useTeams'
 import { AddIcon } from '@chakra-ui/icons'
-import { Box, Button, FormControl, FormLabel, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, FormControl, FormLabel, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure } from '@chakra-ui/react'
 import React, { FC, useMemo, useState } from 'react'
 
 type Props = {
@@ -8,13 +10,36 @@ type Props = {
 }
 
 const Sidebar: FC<Props> = ({ headerHeight, sidebarWidth }) => {
+  const { teams, addTeam } = useTeams(`${NEXT_PUBLIC_BACKEND_API_URL}/teams`);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDisabled, setIsDisabled] = useState(true);
+  const [teamName, setTeamName] = useState('');
+
+  // チーム名の入力時の処理
+  const handleChangeTeamName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTeamName(e.target.value);
+  };
+
+  // チーム作成時の処理
+  const hendleCreateTeam = () => {
+    if (!teamName.trim()) return;
+    const newTeam = {
+      name: teamName
+    }
+    addTeam(newTeam);
+    onModalClose();
+  }
+
+  // モーダルを閉じる処理
+  const onModalClose = () => {
+    setTeamName('');
+    onClose();
+  }
 
   // タスクの項目が空かどうかでボタンを制御
   useMemo(() => {
-
-  }, [])
+    setIsDisabled(!teamName.trim());
+  }, [teamName]);
 
   return (
     <>
@@ -32,27 +57,56 @@ const Sidebar: FC<Props> = ({ headerHeight, sidebarWidth }) => {
         </Stack>
       </Box>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onModalClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>チームを作成</ModalHeader>
+          <Tabs>
+            <TabList>
+              <Tab>チームを作成</Tab>
+              <Tab>チームに参加</Tab>
+            </TabList>
+
+            <TabPanels>
+              <TabPanel>
+                <ModalBody>
+                  <Stack spacing={4}>
+                    <FormControl>
+                      <FormLabel>チーム名</FormLabel>
+                      <Input type='text' placeholder='チームを新規作成する' value={teamName} onChange={handleChangeTeamName} />
+                    </FormControl>
+                  </Stack>
+                </ModalBody>
+                <ModalFooter>
+                  <Button size='sm' colorScheme="blue" mr={3} isDisabled={isDisabled} onClick={hendleCreateTeam}>
+                    作成
+                  </Button>
+                  <Button size='sm' variant="outline" onClick={onModalClose}>
+                    キャンセル
+                  </Button>
+                </ModalFooter>
+              </TabPanel>
+
+              <TabPanel>
+                <ModalBody>
+                  <Stack spacing={4}>
+                    <FormControl>
+                      <FormLabel>チーム名</FormLabel>
+                      <Input type='text' placeholder='チームを探す' />
+                    </FormControl>
+                  </Stack>
+                </ModalBody>
+                <ModalFooter>
+                  <Button size='sm' colorScheme="blue" mr={3} isDisabled={isDisabled}>
+                    検索
+                  </Button>
+                  <Button size='sm' variant="outline" >
+                    キャンセル
+                  </Button>
+                </ModalFooter>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
           <ModalCloseButton />
-          <ModalBody>
-            <Stack spacing={4}>
-              <FormControl>
-                <FormLabel>チーム名</FormLabel>
-                <Input type='text' placeholder='チーム名を入力' />
-              </FormControl>
-            </Stack>
-          </ModalBody>
-          <ModalFooter>
-            <Button size='sm' colorScheme="blue" mr={3} isDisabled={isDisabled}>
-              作成
-            </Button>
-            <Button size='sm' variant="outline" >
-              キャンセル
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
