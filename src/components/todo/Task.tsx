@@ -1,7 +1,7 @@
 import useTasks from '@/hooks/useTasks'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { Box, Button, Checkbox, Flex, FormControl, FormLabel, Heading, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Stack, Text, useDisclosure } from '@chakra-ui/react'
-import React, { ChangeEvent, FC, memo, useState } from 'react'
+import React, { ChangeEvent, FC, memo, useMemo, useState } from 'react'
 import { NEXT_PUBLIC_BACKEND_API_URL } from '@/env'
 import { TaskType } from '../../../types/types'
 
@@ -13,6 +13,7 @@ const Task: FC<Props> = memo(({ task }) => {
   const { deleteTask, updateTask } = useTasks(`${NEXT_PUBLIC_BACKEND_API_URL}/tasks`);
   const { isOpen: isUpdateTaskDataOpen, onOpen: onUpdateTaskDataOpen, onClose: onUpdateTaskDataClose } = useDisclosure();
   const [updateTaskData, setUpdateTaskData] = useState(task);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   // タスク名変更処理
   const handleUpdateTaskDataNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +40,15 @@ const Task: FC<Props> = memo(({ task }) => {
     }
     updateTask(newTask);
   }
+
+  // タスクの項目が空かどうかでボタンを制御
+  useMemo(() => {
+    if (updateTaskData.name.trim() === '' || updateTaskData.start_date.trim() === '' || updateTaskData.end_date.trim() === '') {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
+  }, [updateTaskData.name, updateTaskData.start_date, updateTaskData.end_date])
 
   return (
     <>
@@ -92,7 +102,7 @@ const Task: FC<Props> = memo(({ task }) => {
             </Stack>
           </ModalBody>
           <ModalFooter>
-            <Button size='sm' colorScheme="blue" mr={3} onClick={handleUpdateTaskData}>
+            <Button size='sm' colorScheme="blue" mr={3} onClick={handleUpdateTaskData} isDisabled={isDisabled}>
               編集
             </Button>
             <Button size='sm' variant="outline" onClick={onUpdateTaskDataModalClose} >
