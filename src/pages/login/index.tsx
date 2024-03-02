@@ -24,8 +24,9 @@ const login: FC = () => {
       if (response.status !== 200) {
         console.error("ログインに失敗しました");
       } else {
-        //成功したら、トークンを保存
-          localStorage.setItem("token", response.data.access_token);
+        //成功したら、トークンをクッキーとセッションストレージに保存
+        document.cookie = `token=${response.data.access_token}`;
+        sessionStorage.setItem("token", response.data.access_token);
           alert("ログインに成功しました");
       }
     } catch (error) {
