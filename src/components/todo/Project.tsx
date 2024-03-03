@@ -6,6 +6,7 @@ import useTasks from '@/hooks/useTasks'
 import useProjects from '@/hooks/useProjects'
 import { NEXT_PUBLIC_BACKEND_API_URL } from '@/env'
 import { ProjectType, TaskType } from '../../../types/types'
+import useIsDisabled from '@/hooks/useIsDisabled'
 
 type Props = {
   project: ProjectType
@@ -101,11 +102,7 @@ const Project: FC<Props> = memo(({ project }) => {
 
   // タスクの項目が空かどうかでボタンを制御
   useMemo(() => {
-    if (taskName.trim() === '' || startDate.trim() === '' || endDate.trim() === '') {
-      setIsDisabled(true);
-    } else {
-      setIsDisabled(false);
-    }
+    setIsDisabled(useIsDisabled(taskName, startDate, endDate));
   }, [taskName, startDate, endDate])
 
 

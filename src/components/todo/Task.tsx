@@ -4,6 +4,8 @@ import { Box, Button, Checkbox, Flex, FormControl, FormLabel, Heading, IconButto
 import React, { ChangeEvent, FC, memo, useMemo, useState } from 'react'
 import { NEXT_PUBLIC_BACKEND_API_URL } from '@/env'
 import { TaskType } from '../../../types/types'
+import { isSet } from 'util/types'
+import useIsDisabled from '@/hooks/useIsDisabled'
 
 type Props = {
   task: TaskType
@@ -43,11 +45,7 @@ const Task: FC<Props> = memo(({ task }) => {
 
   // タスクの項目が空かどうかでボタンを制御
   useMemo(() => {
-    if (updateTaskData.name.trim() === '' || updateTaskData.start_date.trim() === '' || updateTaskData.end_date.trim() === '') {
-      setIsDisabled(true);
-    } else {
-      setIsDisabled(false);
-    }
+    setIsDisabled(useIsDisabled(updateTaskData.name, updateTaskData.start_date, updateTaskData.end_date));
   }, [updateTaskData.name, updateTaskData.start_date, updateTaskData.end_date])
 
   return (
