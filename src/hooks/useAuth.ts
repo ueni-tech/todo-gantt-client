@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { UserType } from "../../types/types";
 
 const useAuth = () => {
+  const [isLogin, setIsLogin] = useState(false);
   const [loginUser, setLoginUser] = useState<UserType>({
     name: "",
     email: "",
@@ -24,6 +25,7 @@ const useAuth = () => {
       //2:トークンがあるかどうか
       if (!token) {
         router.push("/login");
+        return;
       }
       //3: トークンがある場合、トークンの有効性を確認する
       const base64Url = token.split(".")[1];
@@ -41,6 +43,7 @@ const useAuth = () => {
       if (exp < Date.now() / 1000) {
 
         router.push("/login");
+        return;
       }
 
       //5:  トークンが有効な場合、トークンからユーザー情報を取得する
@@ -52,13 +55,14 @@ const useAuth = () => {
       if (response.status !== 200) {
         router.push("/login");
       } else {
+        setIsLogin(true);
         setLoginUser(response.data);
       }
     }
     checkToken();
   }, [router]);
 
-  return loginUser;
+  return {loginUser, isLogin};
 };
 
 export default useAuth;
