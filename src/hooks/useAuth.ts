@@ -1,11 +1,13 @@
+import { NEXT_PUBLIC_BACKEND_API_URL } from "@/env";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { UserType } from "../../types/types";
 
 const useAuth = () => {
-  const [loginUser, setLoginUser] = useState({
+  const [loginUser, setLoginUser] = useState<UserType>({
+    name: "",
     email: "",
-    exp: 0,
-    username: "",
   });
 
   const router = useRouter();
@@ -21,8 +23,7 @@ const useAuth = () => {
 
       //2:トークンがあるかどうか
       if (!token) {
-        return;
-        // router.push("/user/login");
+        router.push("/login");
       }
       //3: トークンがある場合、トークンの有効性を確認する
       const base64Url = token.split(".")[1];
@@ -35,31 +36,25 @@ const useAuth = () => {
       );
       const payload = JSON.parse(jsonPayload);
       const exp = payload.exp;
-      
+
       //4: トークンの有効期限を確認する
       if (exp < Date.now() / 1000) {
-        return;
-        // router.push("/user/login");
+
+        router.push("/login");
       }
-      //5: トークンが有効な場合、ユーザー情報を取得する
-      const response = await fetch(`${NEXT_PUBLIC_BACKEND_API_URL}/auth/user`, {
+
+      //5:  トークンが有効な場合、トークンからユーザー情報を取得する
+      const response = await axios.post(`${NEXT_PUBLIC_BACKEND_API_URL}/auth/me`, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const data = await response.json();
       if (response.status !== 200) {
-        return;
-        // router.push("/user/login");
+        router.push("/login");
+      } else {
+        setLoginUser(response.data);
       }
-      //6: ユーザー情報をstateに保存する
-      setLoginUser({
-        email: data.email,
-        exp: exp,
-        username: data.username,
-      });
     }
-
     checkToken();
   }, [router]);
 

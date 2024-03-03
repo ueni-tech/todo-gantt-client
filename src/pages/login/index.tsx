@@ -1,5 +1,6 @@
 import { NEXT_PUBLIC_BACKEND_API_URL } from "@/env";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useState, FormEvent, FC, ChangeEvent } from "react";
 
 const login: FC = () => {
@@ -7,6 +8,8 @@ const login: FC = () => {
     email: "",
     password: "",
   });
+
+  const router = useRouter();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -27,7 +30,7 @@ const login: FC = () => {
         //成功したら、トークンをクッキーとセッションストレージに保存
         document.cookie = `token=${response.data.access_token}`;
         sessionStorage.setItem("token", response.data.access_token);
-          alert("ログインに成功しました");
+        router.push("/");
       }
     } catch (error) {
       console.error(error);
@@ -42,10 +45,10 @@ const login: FC = () => {
           <label htmlFor="email">Email</label>
           <input
             type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
           />
         </div>
         <div className="mb-4">
