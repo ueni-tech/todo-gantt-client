@@ -11,7 +11,6 @@ export default function Home() {
   const  {loginUser: user, isLogin}  = useAuth();
 
   return (
-    // ログインしていない場合は何も表示しない
     isLogin ? (
       <Box>
         <Header headerHeight={headerHeight} />

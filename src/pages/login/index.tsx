@@ -10,7 +10,7 @@ import useIsDisabled from "@/hooks/useIsDisabled";
 const login: FC = () => {
   const [isDisabled, setIsDisabled] = useState(true);
   const { formData, handleChange, handleSubmit } = useLogin();
-
+  const router = useRouter();
     // 入力の項目が空かどうかでボタンを制御
     useMemo(() => {
       setIsDisabled(useIsDisabled(formData.email, formData.password));
@@ -33,6 +33,7 @@ const login: FC = () => {
               </FormControl>
               <Button type="submit" display='block' colorScheme="teal" size="lg" w="50%" mt={4} mx='auto' isDisabled={isDisabled}>ログイン</Button>
             </form>
+            <Button variant='outline' type="button" display='block' colorScheme="teal" size="lg" w='50%' mt={4} mx='auto' onClick={()=>router.push('/register')}>アカウント作成</Button>
           </Box>
         </Container>
       </Box>
