@@ -1,71 +1,42 @@
 import { NEXT_PUBLIC_BACKEND_API_URL } from "@/env";
+import { Box, Button, Center, Container, FormControl, FormLabel, Heading, Input, Link, Text, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, { useState, FormEvent, FC, ChangeEvent } from "react";
+import React, { useState, FormEvent, FC, ChangeEvent, useMemo, use } from "react";
+import AuthHeader from "@/components/layouts/AuthHeader";
+import useLogin from "@/hooks/useLogin";
+import useIsDisabled from "@/hooks/useIsDisabled";
 
 const login: FC = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [isDisabled, setIsDisabled] = useState(true);
+  const { formData, handleChange, handleSubmit } = useLogin();
 
-  const router = useRouter();
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    try {
-      const response = await axios.post(`${NEXT_PUBLIC_BACKEND_API_URL}/auth/login`, formData);
-      if (response.status !== 200) {
-        console.error("ログインに失敗しました");
-      } else {
-        //成功したら、トークンをクッキーとセッションストレージに保存
-        document.cookie = `token=${response.data.access_token}`;
-        sessionStorage.setItem("token", response.data.access_token);
-        router.push("/");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    // 入力の項目が空かどうかでボタンを制御
+    useMemo(() => {
+      setIsDisabled(useIsDisabled(formData.email, formData.password));
+    }, [formData]);
 
   return (
-    <div className="container">
-      <h1>ログイン</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <button type="submit">ログイン</button>
-        </div>
-      </form>
-    </div>
+    <Box>
+      <AuthHeader />
+      <Box mt={20}>
+        <Container>
+          <Heading textAlign="center" as="h2" fontSize="3xl">ログイン</Heading>
+          <Box mt={8}>
+            <form onSubmit={handleSubmit}>
+              <FormControl>
+                <VStack spacing={8}>
+                  <Input variant="filled" type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="メールアドレス" />
+                  <Input variant="filled" type="password" id="password" name="password" value={formData.password} onChange={handleChange} placeholder="パスワード" />
+                </VStack>
+                <Link display='block' textAlign='right' color="blue.300" mt={1}>パスワードを忘れた方はこちら</Link>
+              </FormControl>
+              <Button type="submit" display='block' colorScheme="teal" size="lg" w="50%" mt={4} mx='auto' isDisabled={isDisabled}>ログイン</Button>
+            </form>
+          </Box>
+        </Container>
+      </Box>
+    </Box>
   );
 };
 
