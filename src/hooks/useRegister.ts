@@ -2,9 +2,16 @@ import { NEXT_PUBLIC_BACKEND_API_URL } from "@/env";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { InputsType } from "../../types/types";
+import { useState } from "react";
 
 const useRegister = () => {
   const router = useRouter();
+  const [ apiErrors, setApiErrors ] = useState({
+    name: [],
+    email: [],
+    password: [],
+    password_confirmation: []
+  });
 
   const handleSubmit = async (data: InputsType) => {
     try {
@@ -17,13 +24,15 @@ const useRegister = () => {
         sessionStorage.setItem("token", response.data.access_token);
         router.push("/");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      setApiErrors(error.response.data);
     }
   };
 
   return {
-    handleSubmit
+    handleSubmit,
+    apiErrors
   };
 };
 
