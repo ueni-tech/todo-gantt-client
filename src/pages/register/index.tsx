@@ -40,29 +40,28 @@ const Register = () => {
                 <FormControl isInvalid={!!errors.name}>
                   <Box w='100%'>
                     <FormLabel htmlFor='name'>ユーザー名</FormLabel>
-                    <Input variant="filled" type="text" id="name" placeholder="user name" {...register('name', {required: "ユーザー名を入力してください。", maxLength: 255})} />
+                    <Input variant="filled" type="text" id="name" placeholder="ユーザー名を入力してください" {...register('name', {required: "ユーザー名を入力してください。", maxLength: 255})} />
                   </Box>
                   <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={!!errors.email}>
                   <Box w='100%'>
                     <FormLabel>メールアドレス</FormLabel>
-                    <Input variant="filled" type="email" id="email" placeholder="email" {...register('email', { required: "メールアドレスを入力してください。", pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i})} />
+                    <Input variant="filled" type="email" id="email" placeholder="メールアドレスを入力してください" {...register('email', { required: "メールアドレスを入力してください。", pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i})} />
                   </Box>
                   <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={!!errors.password}>
                   <Box w='100%'>
                     <FormLabel>パスワード</FormLabel>
-                    <Input variant="filled" type="password" id="password" placeholder="password" {...register('password', {required: "パスワードを入力してください", minLength: {value: 6, message: "パスワードは6文字以上の英数字で入力してください。"}, max: 255})} />
-                    <FormHelperText>※6文字以上の英数字で入力してください。</FormHelperText>
+                    <Input variant="filled" type="password" id="password" placeholder="6文字以上の英数字で入力してください。" {...register('password', {required: "パスワードを入力してください", minLength: {value: 6, message: "パスワードは6文字以上の英数字で入力してください。"}, max: 255})} />
                   </Box>
                   <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={!!errors.password_confirmation}>
                   <Box w='100%'>
                     <FormLabel>パスワード（確認）</FormLabel>
-                    <Input variant="filled" type="password" id="password_confirmation" placeholder="password(confirm)" {...register('password_confirmation', {validate: (value)=> value === getValues('password') || "パスワードが一致しません"})} />
+                    <Input variant="filled" type="password" id="password_confirmation" placeholder="確認用パスワードを入力してください" {...register('password_confirmation', {validate: (value)=> value === getValues('password') || "パスワードが一致しません"})} />
                   </Box>
                   <FormErrorMessage>{errors.password_confirmation?.message}</FormErrorMessage>
                 </FormControl>
