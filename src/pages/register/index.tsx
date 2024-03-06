@@ -1,24 +1,17 @@
 import AuthHeader from '@/components/layouts/AuthHeader'
 import useRegister from '@/hooks/useRegister'
-import { Box, Button, Container, FormControl, FormErrorMessage, FormHelperText, FormLabel, Heading, Input, VStack } from '@chakra-ui/react'
-import { useRouter } from 'next/navigation'
-import React, { useMemo, useState } from 'react'
+import { Box, Button, Container, FormControl, FormErrorMessage, FormLabel, Heading, Input, Link, VStack } from '@chakra-ui/react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { InputsType } from '../../../types/types'
+import NextLink from 'next/link'
 
 const Register = () => {
   const { handleSubmit: handleRegisterSubmit, apiErrors } = useRegister();
-  const [isDisabled, setIsDisabled] = useState(true);
-  const router = useRouter();
-  // 入力の項目が空かどうかでボタンを制御
-  // useMemo(() => {
-  //   setIsDisabled(useIsDisabled(formData.name, formData.email, formData.password, formData.password_confirmation));
-  // }, [formData]);
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isValid },
     getValues
   } = useForm<InputsType>();
   const onSubmit: SubmitHandler<InputsType> = (data) => {
@@ -31,27 +24,27 @@ const Register = () => {
       <Box mt={20}>
         <Container>
           <Heading textAlign="center" as="h2" fontSize="3xl">アカウント作成</Heading>
-          <Box mt={8}>
+          <Box my={8}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <VStack spacing={8}>
-                <FormControl isInvalid={!!errors.name || !!apiErrors.name[0]}>
+                <FormControl isInvalid={!!errors.name || !!apiErrors.name?.[0]}>
                   <Box w='100%'>
                     <FormLabel htmlFor='name'>ユーザー名</FormLabel>
                     <Input variant="filled" type="text" id="name" placeholder="ユーザー名を入力してください" {...register('name', {required: "ユーザー名を入力してください。", maxLength: 255})} />
                   </Box>
                   {errors.name&&<FormErrorMessage>{errors.name?.message}</FormErrorMessage>}
-                  {apiErrors.name[0] &&
+                  {apiErrors.name?.[0] &&
                   apiErrors.name.map((error, index) => (
                     <FormErrorMessage key={index}>{error}</FormErrorMessage>
                   ))}
                 </FormControl>
-                <FormControl isInvalid={!!errors.email || apiErrors.email[0]}>
+                <FormControl isInvalid={!!errors.email || apiErrors.email?.[0]}>
                   <Box w='100%'>
                     <FormLabel>メールアドレス</FormLabel>
                     <Input variant="filled" type="email" id="email" placeholder="メールアドレスを入力してください" {...register('email', { required: "メールアドレスを入力してください。", pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i})} />
                   </Box>
                   {errors.email&&<FormErrorMessage>{errors.email?.message}</FormErrorMessage>}
-                  {apiErrors.email[0] &&
+                  {apiErrors.email?.[0] &&
                   apiErrors.email.map((error, index) => (
                     <FormErrorMessage key={index}>{error}</FormErrorMessage>
                   ))}
@@ -70,7 +63,8 @@ const Register = () => {
                   </Box>
                   {errors.password_confirmation&&<FormErrorMessage>{errors.password_confirmation?.message}</FormErrorMessage>}
                 </FormControl>
-                <Button type="submit" display='block' colorScheme="teal" size="lg" w="50%" mt={4} mx='auto'>作成</Button>
+                <Button type="submit" display='block' colorScheme="teal" size="lg" w="50%" mt={4} mx='auto' isDisabled={!isValid}>作成</Button>
+                <Link as={NextLink} href="/login" textAlign="center" color="teal.500">アカウントをお持ちの方はこちら</Link>
               </VStack>
             </form>
           </Box>
