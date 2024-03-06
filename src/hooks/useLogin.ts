@@ -1,4 +1,5 @@
 import { NEXT_PUBLIC_BACKEND_API_URL } from "@/env";
+import { useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
@@ -9,6 +10,7 @@ const useLogin = () => {
     email: '',
     password: ''
   });
+  const toast = useToast();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -29,10 +31,21 @@ const useLogin = () => {
         //成功したら、トークンをクッキーとセッションストレージに保存
         document.cookie = `token=${response.data.access_token}`;
         sessionStorage.setItem("token", response.data.access_token);
+        toast({
+          title: "ログインしました",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
         router.push("/");
       }
     } catch (error) {
-      console.error(error);
+      toast({
+        title: "ログインできませんでした",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 

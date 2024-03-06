@@ -9,6 +9,7 @@ const sidebarWidth = "4.5rem";
 
 export default function Home() {
   const  {loginUser: user, isLogin}  = useAuth();
+  console.log(user);
 
   return (
     isLogin ? (

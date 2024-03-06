@@ -1,8 +1,6 @@
-import { NEXT_PUBLIC_BACKEND_API_URL } from "@/env";
-import { Box, Button, Center, Container, Flex, FormControl, FormLabel, Heading, Input, Link, Text, VStack } from "@chakra-ui/react";
-import axios from "axios";
+import { Box, Button, Container, Flex, FormControl, Heading, Input, Link, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import React, { useState, FormEvent, FC, ChangeEvent, useMemo, use } from "react";
+import React, { useState, FC, useMemo, } from "react";
 import AuthHeader from "@/components/layouts/AuthHeader";
 import useLogin from "@/hooks/useLogin";
 import useIsDisabled from "@/hooks/useIsDisabled";
