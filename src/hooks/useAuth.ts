@@ -3,13 +3,12 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { UserType } from "../../types/types";
+import { useAtom } from 'jotai';
+import { userAtom } from "@/state/userAtom";
 
 const useAuth = () => {
   const [isLogin, setIsLogin] = useState(false);
-  const [loginUser, setLoginUser] = useState<UserType>({
-    name: "",
-    email: "",
-  });
+  const [, setLoginUser] = useAtom(userAtom);
 
   const router = useRouter();
 
@@ -62,7 +61,7 @@ const useAuth = () => {
     checkToken();
   }, [router]);
 
-  return {loginUser, isLogin};
+  return {isLogin};
 };
 
 export default useAuth;

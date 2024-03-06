@@ -8,8 +8,7 @@ const headerHeight = "3rem";
 const sidebarWidth = "4.5rem";
 
 export default function Home() {
-  const  {loginUser: user, isLogin}  = useAuth();
-  console.log(user);
+  const  {isLogin}  = useAuth();
 
   return (
     isLogin ? (

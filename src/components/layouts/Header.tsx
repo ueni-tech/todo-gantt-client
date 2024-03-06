@@ -1,11 +1,14 @@
-import React, { FC } from 'react'
+import React, { FC, use } from 'react'
 import { Avatar, Box, Container, Heading, Text, WrapItem } from '@chakra-ui/react'
+import { useAtom } from 'jotai'
+import { userAtom } from '@/state/userAtom'
 
 type Props = {
   headerHeight: string
 }
 
 const Header: FC<Props> = ({headerHeight}) => {
+  const [user] = useAtom(userAtom);
   return (
     <>
       <Box as='header' bgColor="main" h={headerHeight} position='fixed' top='0' left='0' right='0' zIndex="banner">
@@ -15,7 +18,7 @@ const Header: FC<Props> = ({headerHeight}) => {
             <WrapItem>
               <Avatar size='sm' name='Dan Abrahmov' src='https://bit.ly/dan-abramov' />
             </WrapItem>
-            <Text color='white'>ユーザー名</Text>
+            <Text color='white'>{user.name}</Text>
           </Box>
         </Container>
       </Box>
