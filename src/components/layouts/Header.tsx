@@ -1,8 +1,9 @@
 import React, { FC, use } from 'react'
-import { Avatar, Box, Button, Container, Heading, Menu, MenuButton, MenuItem, MenuList, Text, WrapItem } from '@chakra-ui/react'
+import { Avatar, Box, Button, Container, Heading, Link, Menu, MenuButton, MenuItem, MenuList, Text, WrapItem } from '@chakra-ui/react'
 import { useAtom } from 'jotai'
 import { userAtom } from '@/state/userAtom'
 import useLogout from '@/hooks/useLogout'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   headerHeight: string
@@ -10,6 +11,7 @@ type Props = {
 
 const Header: FC<Props> = ({ headerHeight }) => {
   const [user] = useAtom(userAtom);
+  const router = useRouter();
   const { handleLogout } = useLogout();
   return (
     <>
@@ -26,7 +28,8 @@ const Header: FC<Props> = ({ headerHeight }) => {
               </Box>
             </MenuButton>
             <MenuList>
-              <MenuItem onClick={handleLogout}>ログアウト</MenuItem>
+              <MenuItem onClick={()=>router.push('/mypage')}>マイページ</MenuItem>
+              <MenuItem onClick={handleLogout} color='gray.400' _hover={{color: 'gray.600'}}>ログアウト</MenuItem>
             </MenuList>
           </Menu>
         </Container>

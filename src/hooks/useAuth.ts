@@ -2,7 +2,6 @@ import { NEXT_PUBLIC_BACKEND_API_URL } from "@/env";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { UserType } from "../../types/types";
 import { useAtom } from 'jotai';
 import { userAtom } from "@/state/userAtom";
 
