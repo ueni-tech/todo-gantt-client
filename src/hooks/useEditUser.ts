@@ -8,17 +8,17 @@ const fetcher = async (url: string) => {
 }
 
 const useEditUser = (url: string) => {
-  const { mutate, error } = useSWR(url, fetcher);
+  const { data, mutate, error } = useSWR(url, fetcher);
 
   const updateUser = async (user: UserType) => {
-    await axios.put(`${url}/${user.id}`, user)
+    await axios.put(url, user)
       .then(() => {
         mutate();
       })
       .catch(error => console.error('ユーザー情報の更新に失敗しました', error));
   }
 
-  return { error, updateUser };
+  return { data, error, updateUser };
 };
 
 export default useEditUser;

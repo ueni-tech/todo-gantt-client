@@ -1,3 +1,5 @@
+import { NEXT_PUBLIC_BACKEND_API_URL } from '@/env'
+import useEditUser from '@/hooks/useEditUser'
 import { userAtom } from '@/state/userAtom'
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
 import { Avatar, Divider, Flex, Heading, WrapItem, Link, Box, Text, Input, InputGroup, InputRightElement, Button, Icon, FormControl } from '@chakra-ui/react'
@@ -5,7 +7,8 @@ import { useAtom } from 'jotai'
 import React, { useEffect, useRef, useState } from 'react'
 
 const Profile = () => {
-  const [user, setUser] = useAtom(userAtom);
+  const [user] = useAtom(userAtom);
+  const { data, updateUser } = useEditUser(`${NEXT_PUBLIC_BACKEND_API_URL}/users/${user.id}`);
   const [isEditing, setIsEditing] = useState(false);
   const [editedUserName, setEditedUserName] = useState(user.name);
 
@@ -21,7 +24,12 @@ const Profile = () => {
     setIsEditing(true);
   }
 
+  const handleChangeUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedUserName(e.target.value);
+  }
+
   const handleEditSubmit = () => {
+    updateUser({ ...user, name: editedUserName });
     setIsEditing(false);
   }
 
@@ -30,9 +38,6 @@ const Profile = () => {
     setIsEditing(false);
   }
 
-  const handleChangeUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedUserName(e.target.value);
-  }
 
   return (
     <>
