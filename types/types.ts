@@ -19,8 +19,9 @@ export type TaskType = {
 
 export type UserType = {
   id?: string;
-  name: string;
-  email: string;
+  name?: string;
+  email?: string;
+  password?: string;
 }
 
 export type InputsType = {
