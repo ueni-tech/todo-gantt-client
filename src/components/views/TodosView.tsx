@@ -5,6 +5,7 @@ import { AddIcon } from '@chakra-ui/icons'
 import useProjects from '@/hooks/useProjects'
 import { NEXT_PUBLIC_BACKEND_API_URL } from '@/env'
 import { ProjectType } from '../../../types/types'
+import useIsDisabled from '@/hooks/useIsDisabled'
 
 const TodosView = () => {
   const { projects, addProject } = useProjects(`${NEXT_PUBLIC_BACKEND_API_URL}/projects`);
@@ -29,7 +30,7 @@ const TodosView = () => {
 
   // プロジェクト名が空かどうかでボタンを制御
   useMemo(() => {
-    setIsDisabled(!projectName.trim());
+    setIsDisabled(useIsDisabled(projectName));
   }, [projectName]);
 
   // モーダルを閉じる処理

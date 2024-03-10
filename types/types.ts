@@ -16,3 +16,17 @@ export type TaskType = {
   end_date: string;
   is_completed: boolean;
 }
+
+export type UserType = {
+  id?: string;
+  name?: string;
+  email?: string;
+  password?: string;
+}
+
+export type InputsType = {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}

@@ -1,0 +1,45 @@
+import { Box, Button, Container, Flex, FormControl, Heading, Input, Link, VStack } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
+import React, { useState, FC, useMemo, } from "react";
+import AuthHeader from "@/components/layouts/AuthHeader";
+import useLogin from "@/hooks/useLogin";
+import useIsDisabled from "@/hooks/useIsDisabled";
+import NextLink from 'next/link'
+
+const login: FC = () => {
+  const [isDisabled, setIsDisabled] = useState(true);
+  const { formData, handleChange, handleSubmit } = useLogin();
+  const router = useRouter();
+  // 入力の項目が空かどうかでボタンを制御
+  useMemo(() => {
+    setIsDisabled(useIsDisabled(formData.email, formData.password));
+  }, [formData]);
+
+  return (
+    <Box>
+      <AuthHeader />
+      <Box mt={20}>
+        <Container>
+          <Heading textAlign="center" as="h2" fontSize="3xl">ログイン</Heading>
+          <Box mt={8}>
+            <form onSubmit={handleSubmit}>
+              <FormControl>
+                <VStack spacing={8}>
+                  <Input variant="filled" type="email" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="メールアドレス" />
+                  <Input variant="filled" type="password" id="password" name="password" value={formData.password} onChange={handleChange} placeholder="パスワード" />
+                </VStack>
+                <Flex justify='flex-end'>
+                  <Link as={NextLink} href="#" color="teal.500" mt={1}>パスワードを忘れた方はこちら</Link>
+                </Flex>
+              </FormControl>
+              <Button type="submit" display='block' colorScheme="teal" size="lg" w="50%" mt={4} mx='auto' isDisabled={isDisabled}>ログイン</Button>
+            </form>
+            <Button variant='outline' type="button" display='block' colorScheme="teal" size="lg" w='50%' mt={4} mx='auto' onClick={() => router.push('/register')}>アカウント作成</Button>
+          </Box>
+        </Container>
+      </Box>
+    </Box>
+  );
+};
+
+export default login;
