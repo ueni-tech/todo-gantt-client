@@ -56,7 +56,7 @@ const Profile = () => {
           {isEditing ?
             <FormControl>
               <InputGroup>
-                <Input type='text' ref={inputRef} onBlur={handleEditCancel} placeholder='ユーザー名' value={editedUserName} onChange={handleChangeUserName} />
+                <Input type='text' ref={inputRef} placeholder='ユーザー名' value={editedUserName} onChange={handleChangeUserName} />
                 <InputRightElement right={3}>
                   <Flex>
                     <Button variant="ghost" size='xs' onClick={handleEditSubmit}>
