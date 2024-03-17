@@ -29,12 +29,12 @@ const Profile = () => {
   }
 
   const handleEditSubmit = () => {
-    updateUser({ ...user, name: editedUserName });
+    updateUser({ ...data, name: editedUserName });
     setIsEditing(false);
   }
 
   const handleEditCancel = () => {
-    setEditedUserName(user.name);
+    setEditedUserName(data?.name);
     setIsEditing(false);
   }
 
@@ -69,7 +69,7 @@ const Profile = () => {
                 </InputRightElement>
               </InputGroup>
             </FormControl>
-            : <Text fontSize='lg'>{user.name}</Text>}
+            : <Text fontSize='lg'>{data?.name}</Text>}
         </Box>
         {!isEditing && <Link color="teal.500" onClick={handleClickEditUserName}>編集</Link>}
       </Flex>

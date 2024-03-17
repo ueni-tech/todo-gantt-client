@@ -1,7 +1,4 @@
 import { atom } from "jotai";
+import { UserType } from "../../types/types";
 
-export const userAtom = atom({
-  id: "",
-  name: "",
-  email: "",
-});
+export const userAtom = atom<UserType>({});
