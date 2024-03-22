@@ -1,7 +1,7 @@
 import Header from '@/components/layouts/Header'
 import Mail from '@/components/mypage/Mail';
 import Profile from '@/components/mypage/Profile';
-import Signout from '@/components/mypage/Signout';
+import SignOut from '@/components/mypage/SignOut';
 import useAuth from '@/hooks/useAuth';
 import { Avatar, Box, Heading, Tab, TabList, TabPanel, TabPanels, Tabs, WrapItem, Link, Text, Flex, Container, Divider } from '@chakra-ui/react';
 import React from 'react'
@@ -22,7 +22,7 @@ const Mypage = () => {
               <TabList>
                 <Tab>プロフィール</Tab>
                 <Tab>メール</Tab>
-                <Tab>退会</Tab>
+                <Tab>アカウント削除</Tab>
               </TabList>
 
               <TabPanels mt={6} pl={8}>
@@ -33,7 +33,7 @@ const Mypage = () => {
                   <Mail />
                 </TabPanel>
                 <TabPanel>
-                  <Signout />
+                  <SignOut />
                 </TabPanel>
               </TabPanels>
             </Tabs>
